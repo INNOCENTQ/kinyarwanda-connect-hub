@@ -11,6 +11,7 @@ import Diagnose from "./pages/Diagnose";
 import Marketplace from "./pages/Marketplace";
 import ChatRoom from "./pages/ChatRoom";
 import ChatPage from "./pages/ChatPage";
+import Weather from "./pages/Weather";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/diagnose" element={<Diagnose />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/chat-room/:roomId" element={<ChatRoom />} />
+            <Route path="/weather" element={<Weather />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
