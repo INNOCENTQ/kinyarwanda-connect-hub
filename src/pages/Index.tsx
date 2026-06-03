@@ -6,7 +6,7 @@ const FEATURES = [
   { icon: MessageCircle, title: "AI Chatbot", desc: "Baza ikibazo cyose ku buhinzi & ubworozi", to: "/chat" },
   { icon: Stethoscope, title: "Gusuzuma indwara", desc: "Fotora itungo cg igihingwa, AI ikuvure", to: "/diagnose" },
   { icon: Store, title: "Isoko ry'abahinzi", desc: "Guranisha cg uhindurane ibihingwa & matungo", to: "/marketplace" },
-  { icon: CloudSun, title: "Ikirere", desc: "Inama z'ikirere ku bihingwa byawe", to: "/chat" },
+  { icon: CloudSun, title: "Ikirere", desc: "Reba ikirere n'inama z'iminsi 7 iri imbere", to: "/weather" },
 ];
 
 const HOW = [

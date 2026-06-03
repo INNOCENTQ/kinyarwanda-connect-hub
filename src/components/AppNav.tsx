@@ -1,11 +1,12 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Sprout, MessageCircle, Stethoscope, Store, LogOut, LogIn, Menu } from "lucide-react";
+import { Sprout, MessageCircle, Stethoscope, Store, LogOut, LogIn, Menu, CloudSun } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const links = [
   { to: "/", label: "Ahabanza", icon: Sprout },
+  { to: "/weather", label: "Ikirere", icon: CloudSun },
   { to: "/chat", label: "AI Chat", icon: MessageCircle },
   { to: "/diagnose", label: "Gusuzuma", icon: Stethoscope },
   { to: "/marketplace", label: "Isoko", icon: Store },
