@@ -54,16 +54,27 @@ export default function Weather() {
 
   const loadCoords = () => {
     setLoading(true);
+    setCurrent(null);
+    setDaily([]);
     if (!navigator.geolocation) {
-      setCoords({ lat: -1.9577, lon: 30.1127, name: "Kigali (default)" });
+      toast.error("Telefoni yawe ntiyemera kumenya aho uri. Dukoresheje Kigali.");
+      setCoords({ lat: -1.9577, lon: 30.1127, name: "Kigali" });
       return;
     }
+    toast.info("Turareba aho uri...");
     navigator.geolocation.getCurrentPosition(
-      (p) => setCoords({ lat: p.coords.latitude, lon: p.coords.longitude }),
-      () => {
-        toast.error("Ntibyashobotse kubona aho uri. Dukoresheje Kigali.");
-        setCoords({ lat: -1.9577, lon: 30.1127, name: "Kigali" });
-      }
+      (p) => {
+        toast.success("Twabonye aho uri!");
+        setCoords({ lat: p.coords.latitude, lon: p.coords.longitude });
+      },
+      (err) => {
+        const msg = err.code === 1
+          ? "Wanze kwemera ko system imenya aho uri. Emera mu mwanya wa browser maze ukande Vugurura."
+          : "Ntibyashobotse kubona aho uri. Dukoresheje Kigali.";
+        toast.error(msg);
+        setCoords({ lat: -1.9577, lon: 30.1127, name: "Kigali (default)" });
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
     );
   };
 
@@ -94,12 +105,16 @@ export default function Weather() {
         setDaily(days);
 
         // reverse geocode (free, no key)
-        if (!coords.name) {
+        if (!coords.name || coords.name.includes("default")) {
           try {
-            const g = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${coords.lat}&longitude=${coords.lon}&language=en`);
+            const g = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${coords.lat}&longitude=${coords.lon}&language=en&count=1`);
             const gd = await g.json();
-            const name = gd?.results?.[0]?.name;
-            if (name) setCoords((c) => c ? { ...c, name } : c);
+            const res = gd?.results?.[0];
+            if (res) {
+              const parts = [res.name, res.admin1, res.country].filter(Boolean);
+              const name = Array.from(new Set(parts)).join(", ");
+              setCoords((c) => c ? { ...c, name } : c);
+            }
           } catch {}
         }
       } catch {
