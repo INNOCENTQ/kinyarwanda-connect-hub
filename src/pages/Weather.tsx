@@ -80,7 +80,7 @@ export default function Weather() {
 
   useEffect(() => { loadCoords(); }, []);
 
-  // Fetch weather + reverse geocode
+  // Fetch weather
   useEffect(() => {
     if (!coords) return;
     (async () => {
@@ -103,24 +103,36 @@ export default function Weather() {
           code: d.daily.weather_code[i],
         }));
         setDaily(days);
-
-        // reverse geocode (free, no key)
-        if (!coords.name || coords.name.includes("default")) {
-          try {
-            const g = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${coords.lat}&longitude=${coords.lon}&language=en&count=1`);
-            const gd = await g.json();
-            const res = gd?.results?.[0];
-            if (res) {
-              const parts = [res.name, res.admin1, res.country].filter(Boolean);
-              const name = Array.from(new Set(parts)).join(", ");
-              setCoords((c) => c ? { ...c, name } : c);
-            }
-          } catch {}
-        }
       } catch {
         toast.error("Ntibyashobotse kubona ikirere.");
       } finally {
         setLoading(false);
+      }
+    })();
+  }, [coords?.lat, coords?.lon]);
+
+  // Reverse geocode (non-blocking)
+  useEffect(() => {
+    if (!coords) return;
+    if (coords.name && !coords.name.includes("default")) return;
+    (async () => {
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 4000);
+        const g = await fetch(
+          `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${coords.lat}&longitude=${coords.lon}&language=en&count=1`,
+          { signal: ctrl.signal }
+        );
+        clearTimeout(t);
+        const gd = await g.json();
+        const res = gd?.results?.[0];
+        if (res) {
+          const parts = [res.name, res.admin1, res.country].filter(Boolean);
+          const name = Array.from(new Set(parts)).join(", ");
+          setCoords((c) => (c ? { ...c, name } : c));
+        }
+      } catch {
+        // ntibikundwe — iguma ku default
       }
     })();
   }, [coords?.lat, coords?.lon]);
