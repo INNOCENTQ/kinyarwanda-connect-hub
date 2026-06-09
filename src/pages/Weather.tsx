@@ -54,16 +54,27 @@ export default function Weather() {
 
   const loadCoords = () => {
     setLoading(true);
+    setCurrent(null);
+    setDaily([]);
     if (!navigator.geolocation) {
-      setCoords({ lat: -1.9577, lon: 30.1127, name: "Kigali (default)" });
+      toast.error("Telefoni yawe ntiyemera kumenya aho uri. Dukoresheje Kigali.");
+      setCoords({ lat: -1.9577, lon: 30.1127, name: "Kigali" });
       return;
     }
+    toast.info("Turareba aho uri...");
     navigator.geolocation.getCurrentPosition(
-      (p) => setCoords({ lat: p.coords.latitude, lon: p.coords.longitude }),
-      () => {
-        toast.error("Ntibyashobotse kubona aho uri. Dukoresheje Kigali.");
-        setCoords({ lat: -1.9577, lon: 30.1127, name: "Kigali" });
-      }
+      (p) => {
+        toast.success("Twabonye aho uri!");
+        setCoords({ lat: p.coords.latitude, lon: p.coords.longitude });
+      },
+      (err) => {
+        const msg = err.code === 1
+          ? "Wanze kwemera ko system imenya aho uri. Emera mu mwanya wa browser maze ukande Vugurura."
+          : "Ntibyashobotse kubona aho uri. Dukoresheje Kigali.";
+        toast.error(msg);
+        setCoords({ lat: -1.9577, lon: 30.1127, name: "Kigali (default)" });
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
     );
   };
 
