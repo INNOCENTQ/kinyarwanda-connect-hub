@@ -105,12 +105,16 @@ export default function Weather() {
         setDaily(days);
 
         // reverse geocode (free, no key)
-        if (!coords.name) {
+        if (!coords.name || coords.name.includes("default")) {
           try {
-            const g = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${coords.lat}&longitude=${coords.lon}&language=en`);
+            const g = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${coords.lat}&longitude=${coords.lon}&language=en&count=1`);
             const gd = await g.json();
-            const name = gd?.results?.[0]?.name;
-            if (name) setCoords((c) => c ? { ...c, name } : c);
+            const res = gd?.results?.[0];
+            if (res) {
+              const parts = [res.name, res.admin1, res.country].filter(Boolean);
+              const name = Array.from(new Set(parts)).join(", ");
+              setCoords((c) => c ? { ...c, name } : c);
+            }
           } catch {}
         }
       } catch {
