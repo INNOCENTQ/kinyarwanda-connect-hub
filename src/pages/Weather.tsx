@@ -111,28 +111,46 @@ export default function Weather() {
     })();
   }, [coords?.lat, coords?.lon]);
 
-  // Reverse geocode (non-blocking)
+  // Reverse geocode: akarere / umurenge / akagari (non-blocking)
   useEffect(() => {
     if (!coords) return;
     if (coords.name && !coords.name.includes("default")) return;
     (async () => {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 5000);
       try {
-        const ctrl = new AbortController();
-        const t = setTimeout(() => ctrl.abort(), 4000);
         const g = await fetch(
-          `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${coords.lat}&longitude=${coords.lon}&language=en&count=1`,
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${coords.lat}&longitude=${coords.lon}&localityLanguage=en`,
           { signal: ctrl.signal }
         );
-        clearTimeout(t);
         const gd = await g.json();
-        const res = gd?.results?.[0];
-        if (res) {
-          const parts = [res.name, res.admin1, res.country].filter(Boolean);
-          const name = Array.from(new Set(parts)).join(", ");
-          setCoords((c) => (c ? { ...c, name } : c));
-        }
+        const admins: { name: string; adminLevel: number }[] = gd?.localityInfo?.administrative || [];
+        // Rwanda: 2=Intara, 4=Akarere, 5=Umurenge, 6=Akagari
+        const byLevel = (lv: number) => admins.find((a) => a.adminLevel === lv)?.name;
+        const cell = byLevel(6);
+        const sector = byLevel(5);
+        const district = byLevel(4) || gd?.principalSubdivision;
+        const parts = [cell, sector, district].filter(Boolean) as string[];
+        const name = parts.length ? Array.from(new Set(parts)).join(", ") : gd?.locality;
+        if (name) setCoords((c) => (c ? { ...c, name } : c));
+        else throw new Error("no name");
       } catch {
-        // ntibikundwe — iguma ku default
+        // fallback: open-meteo
+        try {
+          const g2 = await fetch(
+            `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${coords.lat}&longitude=${coords.lon}&language=en&count=1`
+          );
+          const gd2 = await g2.json();
+          const res = gd2?.results?.[0];
+          if (res) {
+            const parts = [res.name, res.admin2, res.admin1].filter(Boolean);
+            setCoords((c) => (c ? { ...c, name: Array.from(new Set(parts)).join(", ") } : c));
+          }
+        } catch {
+          // iguma ku coordinates
+        }
+      } finally {
+        clearTimeout(t);
       }
     })();
   }, [coords?.lat, coords?.lon]);
