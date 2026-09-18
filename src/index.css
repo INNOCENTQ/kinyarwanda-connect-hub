@@ -2,39 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
-
 @layer base {
   :root {
-    --background: 45 30% 97%;
-    --foreground: 140 30% 12%;
+    --background: 46 47% 94%;
+    --foreground: 143 50% 16%;
 
-    --card: 45 40% 95%;
-    --card-foreground: 140 30% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 143 50% 16%;
 
     --popover: 45 30% 97%;
     --popover-foreground: 140 30% 12%;
 
-    --primary: 142 45% 28%;
-    --primary-foreground: 45 30% 97%;
+    --primary: 143 50% 24%;
+    --primary-foreground: 46 47% 96%;
 
-    --secondary: 35 60% 50%;
-    --secondary-foreground: 45 30% 97%;
+    --secondary: 43 86% 63%;
+    --secondary-foreground: 143 50% 20%;
 
-    --muted: 45 20% 90%;
-    --muted-foreground: 140 10% 45%;
+    --muted: 84 24% 88%;
+    --muted-foreground: 143 15% 40%;
 
-    --accent: 35 60% 50%;
-    --accent-foreground: 45 30% 97%;
+    --accent: 84 48% 45%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 140 15% 82%;
-    --input: 140 15% 82%;
-    --ring: 142 45% 28%;
+    --border: 91 19% 79%;
+    --input: 91 19% 79%;
+    --ring: 143 50% 24%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     --sidebar-background: 140 20% 15%;
     --sidebar-foreground: 45 30% 90%;
@@ -93,10 +91,10 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Source Sans 3', sans-serif;
+    font-family: 'Manrope', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Merriweather', serif;
+    font-family: 'Sora', sans-serif;
   }
 }
