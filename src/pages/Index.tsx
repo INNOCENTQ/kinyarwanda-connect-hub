@@ -88,8 +88,30 @@ const Index = () => {
         </div>
       </section>
 
-      <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
-        © 2026 Umuhinzi AI — MIGAMBI Innocent 🇷🇼
+      <footer className="border-t border-border">
+        <div className="mx-auto grid max-w-5xl gap-8 px-4 py-10 md:grid-cols-2">
+          <div>
+            <h3 className="text-lg font-bold text-foreground">Ibyerekeye Umuhinzi AI</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              Umuhinzi AI ni urubuga rukorwa mu Rwanda rufasha abahinzi n'aborozi gukoresha ikoranabuhanga mu buzima bwabo bwa misi yose. Usuye ikirere cy'aho uri, usuzumisha amatungo n'ibihingwa birwaye ukoresheje ifoto cyangwa ijwi, ubone inama zihuse mu Kinyarwanda, kandi uhuzwe n'abandi bahinzi ku isoko — byose bikorwa na telefone ntoya.
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              Iyi ngingo yatewe n'igitekerezo cya <span className="font-bold text-foreground">MIGAMBI Innocent</span>, umunyeshuri w'ikoranabuhanga (Level 4, Software Development), ashaka ko umuhinzi wese wumva ubwenge bw'ubukorano mu kibanza cye.
+            </p>
+          </div>
+          <div className="md:text-right">
+            <h3 className="text-lg font-bold text-foreground">Serivisi zacu</h3>
+            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+              <li><Link to="/weather" className="hover:text-primary">Ikirere n'iteganyagihe</Link></li>
+              <li><Link to="/diagnose" className="hover:text-primary">Gusuzuma amatungo n'ibihingwa</Link></li>
+              <li><Link to="/chat" className="hover:text-primary">AI Chat — inama zihuse</Link></li>
+              <li><Link to="/marketplace" className="hover:text-primary">Isoko ry'abahinzi n'aborozi</Link></li>
+            </ul>
+          </div>
+        </div>
+        <div className="border-t border-border py-6 text-center text-sm text-muted-foreground">
+          © 2026 Umuhinzi AI — MIGAMBI Innocent 🇷🇼
+        </div>
       </footer>
     </div>
   );
