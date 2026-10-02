@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      ads: {
+        Row: {
+          active: boolean
+          active_until: string | null
+          business_name: string
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          link_url: string | null
+          phone: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          active_until?: string | null
+          business_name: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          link_url?: string | null
+          phone?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          active_until?: string | null
+          business_name?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          link_url?: string | null
+          phone?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           content: string
@@ -136,6 +178,7 @@ export type Database = {
           currency: string | null
           description: string | null
           district: string | null
+          featured_until: string | null
           id: string
           image_urls: string[] | null
           latitude: number | null
@@ -156,6 +199,7 @@ export type Database = {
           currency?: string | null
           description?: string | null
           district?: string | null
+          featured_until?: string | null
           id?: string
           image_urls?: string[] | null
           latitude?: number | null
@@ -176,6 +220,7 @@ export type Database = {
           currency?: string | null
           description?: string | null
           district?: string | null
+          featured_until?: string | null
           id?: string
           image_urls?: string[] | null
           latitude?: number | null
@@ -188,6 +233,39 @@ export type Database = {
           title?: string
           unit?: string | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      payment_requests: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          kind: string
+          phone: string
+          reference_id: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          kind: string
+          phone: string
+          reference_id?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          kind?: string
+          phone?: string
+          reference_id?: string | null
+          status?: string
           user_id?: string
         }
         Relationships: []
@@ -234,15 +312,136 @@ export type Database = {
         }
         Relationships: []
       }
+      subscriptions: {
+        Row: {
+          active_until: string
+          plan: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_until: string
+          plan?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_until?: string
+          plan?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vet_consultations: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          phone: string
+          status: string
+          user_id: string
+          vet_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          phone: string
+          status?: string
+          user_id: string
+          vet_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          phone?: string
+          status?: string
+          user_id?: string
+          vet_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vet_consultations_vet_id_fkey"
+            columns: ["vet_id"]
+            isOneToOne: false
+            referencedRelation: "vets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vets: {
+        Row: {
+          active: boolean
+          created_at: string
+          district: string | null
+          fee: number
+          id: string
+          name: string
+          phone: string | null
+          specialty: string | null
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          district?: string | null
+          fee?: number
+          id?: string
+          name: string
+          phone?: string | null
+          specialty?: string | null
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          district?: string | null
+          fee?: number
+          id?: string
+          name?: string
+          phone?: string | null
+          specialty?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_premium: { Args: { _uid: string }; Returns: boolean }
+      review_payment: {
+        Args: { _approve: boolean; _id: string }
+        Returns: undefined
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -369,6 +568,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
