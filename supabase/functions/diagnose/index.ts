@@ -1,4 +1,7 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { createClient } from 'npm:@supabase/supabase-js@2';
+
+const FREE_LIMIT = 3;
 
 const SYSTEM_LIVESTOCK = `Uri inzobere mu buvuzi bw'amatungo mu Rwanda. Subiza BIGUFI cyane mu Kinyarwanda (max 80 amagambo).
 
@@ -27,6 +30,19 @@ Deno.serve(async (req) => {
     const { type, imageBase64, imageMime, audioBase64, audioMime, symptoms, location, weather } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) throw new Error('LOVABLE_API_KEY missing');
+
+    // Free plan: 3 diagnoses per month; premium unlimited
+    const json = (b: unknown, s: number) => new Response(JSON.stringify(b), { status: s, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    const authHeader = req.headers.get('Authorization') || '';
+    const sb = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_ANON_KEY')!, { global: { headers: { Authorization: authHeader } } });
+    const { data: { user } } = await sb.auth.getUser(authHeader.replace('Bearer ', ''));
+    if (!user) return json({ error: 'Banza winjire.' }, 401);
+    const { data: premium } = await sb.rpc('is_premium', { _uid: user.id });
+    if (!premium) {
+      const start = new Date(); start.setUTCDate(1); start.setUTCHours(0, 0, 0, 0);
+      const { count } = await sb.from('diagnosis_records').select('id', { count: 'exact', head: true }).eq('user_id', user.id).gte('created_at', start.toISOString());
+      if ((count ?? 0) >= FREE_LIMIT) return json({ error: 'LIMIT', message: `Wakoresheje isuzuma ${FREE_LIMIT} ry'ubuntu uku kwezi. Fata Premium ukomeze.` }, 403);
+    }
 
     const userContent: any[] = [];
     let prompt = '';
