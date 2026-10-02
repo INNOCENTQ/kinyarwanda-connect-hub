@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import AppNav from "@/components/AppNav";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,7 +8,8 @@ import ReactMarkdown from "react-markdown";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { usePlan } from "@/hooks/usePlan";
 
 const DIAGNOSE_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/diagnose`;
 
@@ -79,6 +80,10 @@ function MediaInput({ type, onResult }: { type: "livestock" | "crop"; onResult: 
         body: JSON.stringify(payload),
       });
       const data = await r.json();
+      if (data.error === "LIMIT") {
+        toast.error(data.message, { action: { label: "Fata Premium", onClick: () => { window.location.href = "/premium"; } } });
+        return;
+      }
       if (!r.ok) throw new Error(data.error || "Ikibazo");
       onResult(data.result);
       if (user) {
@@ -141,15 +146,21 @@ export default function Diagnose() {
   const { user, loading } = useAuth();
   const nav = useNavigate();
   const [result, setResult] = useState("");
+  const { premium, used } = usePlan(result);
 
-  if (!loading && !user) { nav("/auth"); return null; }
+  useEffect(() => { if (!loading && !user) nav("/auth"); }, [loading, user, nav]);
+  if (!user) return null;
 
   return (
     <div className="min-h-screen bg-background">
       <AppNav />
       <main className="max-w-3xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-foreground mb-2">Gusuzuma na AI</h1>
-        <p className="text-muted-foreground mb-6">Fotora itungo cyangwa igihingwa, AI izaguha indwara n'umuti.</p>
+        <p className="text-muted-foreground mb-4">Fotora itungo cyangwa igihingwa, AI izaguha indwara n'umuti.</p>
+        <div className="mb-6 flex items-center justify-between gap-3 rounded-lg border border-border bg-card p-3 text-sm">
+          {premium ? <span className="font-bold text-primary">Premium — gusuzuma nta mupaka</span> : <span className="text-muted-foreground">Ubuntu: wakoresheje {Math.min(used, 3)}/3 uku kwezi</span>}
+          {!premium && <Link to="/premium" className="font-bold text-primary">Fata Premium</Link>}
+        </div>
         <Tabs defaultValue="livestock">
           <TabsList className="grid grid-cols-2 w-full">
             <TabsTrigger value="livestock">🐄 Amatungo</TabsTrigger>
