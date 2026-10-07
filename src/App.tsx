@@ -12,6 +12,9 @@ import Marketplace from "./pages/Marketplace";
 import ChatRoom from "./pages/ChatRoom";
 import ChatPage from "./pages/ChatPage";
 import Weather from "./pages/Weather";
+import Premium from "./pages/Premium";
+import Vets from "./pages/Vets";
+import Admin from "./pages/Admin";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +33,9 @@ const App = () => (
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/chat-room/:roomId" element={<ChatRoom />} />
             <Route path="/weather" element={<Weather />} />
+            <Route path="/premium" element={<Premium />} />
+            <Route path="/vets" element={<Vets />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
