@@ -1,6 +1,7 @@
 import { ArrowRight, Camera, CloudSun, MapPin, MessageCircle, Mic, Stethoscope, Store } from "lucide-react";
 import { Link } from "react-router-dom";
 import AppNav from "@/components/AppNav";
+import AdBanner from "@/components/AdBanner";
 import { Button } from "@/components/ui/button";
 import heroFarmer from "@/assets/rwanda-terraced-farmer.jpg";
 import cattleCare from "@/assets/ankole-cattle-care.jpg";
@@ -71,6 +72,7 @@ const Index = () => {
             </div>
           </Link>
         </section>
+        <div className="mt-6"><AdBanner /></div>
       </main>
 
       <section className="mt-8 bg-muted/40 py-14">

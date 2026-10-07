@@ -1,19 +1,23 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Sprout, MessageCircle, Stethoscope, Store, LogOut, LogIn, Menu, CloudSun } from "lucide-react";
+import { Sprout, MessageCircle, Stethoscope, Store, LogOut, LogIn, Menu, CloudSun, Crown, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { usePlan } from "@/hooks/usePlan";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-const links = [
+const baseLinks = [
   { to: "/", label: "Ahabanza", icon: Sprout },
   { to: "/weather", label: "Ikirere", icon: CloudSun },
   { to: "/chat", label: "AI Chat", icon: MessageCircle },
   { to: "/diagnose", label: "Gusuzuma", icon: Stethoscope },
   { to: "/marketplace", label: "Isoko", icon: Store },
+  { to: "/premium", label: "Premium", icon: Crown },
 ];
 
 export default function AppNav() {
   const { user, signOut } = useAuth();
+  const { isAdmin } = usePlan();
+  const links = isAdmin ? [...baseLinks, { to: "/admin", label: "Ubuyobozi", icon: Shield }] : baseLinks;
   const loc = useLocation();
   const nav = useNavigate();
   const [open, setOpen] = useState(false);
