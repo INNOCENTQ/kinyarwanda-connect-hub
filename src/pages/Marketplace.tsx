@@ -8,11 +8,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, MapPin, Phone, Loader2, Store, MessageCircle } from "lucide-react";
+import { Plus, MapPin, Loader2, Store, MessageCircle, Star } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import AdBanner from "@/components/AdBanner";
+import PayDialog from "@/components/PayDialog";
+import { PRICES } from "@/hooks/usePlan";
 
-type Listing = { id: string; user_id: string; title: string; description: string; category: string; product_type: string; quantity: number; unit: string; price: number; district: string; sector: string; image_urls: string[]; created_at: string };
+type Listing = { id: string; user_id: string; title: string; description: string; category: string; product_type: string; quantity: number; unit: string; price: number; district: string; sector: string; image_urls: string[]; created_at: string; featured_until?: string | null };
 
 export default function Marketplace() {
   const { user } = useAuth();
@@ -21,13 +24,16 @@ export default function Marketplace() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState<string>("all");
+  const [promote, setPromote] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
     let q = supabase.from("listings").select("*").eq("status", "active").order("created_at", { ascending: false });
     if (filter !== "all") q = q.eq("category", filter);
     const { data } = await q;
-    setListings((data as Listing[]) || []);
+    const now = Date.now();
+    const isF = (l: any) => l.featured_until && new Date(l.featured_until).getTime() > now;
+    setListings(((data as Listing[]) || []).sort((a, b) => Number(isF(b)) - Number(isF(a))));
     setLoading(false);
   };
   useEffect(() => { load(); }, [filter]);
@@ -76,10 +82,11 @@ export default function Marketplace() {
         {loading ? <div className="flex justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div> : (
           listings.length === 0 ? <p className="text-center text-muted-foreground py-12">Nta bicuruzwa biriho ubu.</p> : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {listings.map(l => (
-                <div key={l.id} className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+              {listings.map(l => { const featured = l.featured_until && new Date(l.featured_until) > new Date(); return (
+                <div key={l.id} className={`bg-card border rounded-xl overflow-hidden hover:shadow-md transition-shadow ${featured ? "border-secondary border-2" : "border-border"}`}>
                   {l.image_urls?.[0] && <img src={l.image_urls[0]} alt={l.title} className="w-full h-44 object-cover" />}
                   <div className="p-4 space-y-2">
+                    {featured && <span className="inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs font-bold text-secondary-foreground"><Star className="h-3 w-3" />Byamamajwe</span>}
                     <div className="flex justify-between items-start gap-2">
                       <h3 className="font-bold text-foreground">{l.title}</h3>
                       <span className="text-primary font-bold text-sm">{l.price ? `${l.price} RWF` : "Guhindurana"}</span>
@@ -87,14 +94,18 @@ export default function Marketplace() {
                     <p className="text-xs text-muted-foreground">{l.product_type} • {l.quantity} {l.unit}</p>
                     {l.description && <p className="text-sm text-muted-foreground line-clamp-2">{l.description}</p>}
                     {l.district && <p className="text-xs text-muted-foreground flex items-center gap-1"><MapPin className="h-3 w-3" />{l.district} {l.sector && `, ${l.sector}`}</p>}
-                    <Button size="sm" className="w-full" onClick={() => contact(l)}><MessageCircle className="h-4 w-4" />Vugana na nyiri</Button>
+                    {user?.id === l.user_id
+                      ? <Button size="sm" variant="outline" className="w-full" onClick={() => setPromote(l.id)}><Star className="h-4 w-4" />Yamamaze ({PRICES.featured} RWF)</Button>
+                      : <Button size="sm" className="w-full" onClick={() => contact(l)}><MessageCircle className="h-4 w-4" />Vugana na nyiri</Button>}
                   </div>
                 </div>
-              ))}
+              ); })}
             </div>
           )
         )}
+        <div className="mt-8"><AdBanner /></div>
       </main>
+      <PayDialog open={!!promote} onOpenChange={o => !o && setPromote(null)} kind="featured" amount={PRICES.featured} referenceId={promote ?? undefined} title="Kwamamaza igicuruzwa (iminsi 7)" />
     </div>
   );
 }
