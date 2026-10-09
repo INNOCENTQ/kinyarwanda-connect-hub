@@ -280,6 +280,7 @@ export type Database = {
           longitude: number | null
           phone: string | null
           sector: string | null
+          share_location: boolean
           updated_at: string
           user_id: string
           village: string | null
@@ -293,6 +294,7 @@ export type Database = {
           longitude?: number | null
           phone?: string | null
           sector?: string | null
+          share_location?: boolean
           updated_at?: string
           user_id: string
           village?: string | null
@@ -306,6 +308,7 @@ export type Database = {
           longitude?: number | null
           phone?: string | null
           sector?: string | null
+          share_location?: boolean
           updated_at?: string
           user_id?: string
           village?: string | null

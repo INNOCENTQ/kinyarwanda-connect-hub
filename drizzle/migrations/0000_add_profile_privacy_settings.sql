@@ -1,0 +1,2 @@
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS share_location boolean NOT NULL DEFAULT true;
+COMMENT ON COLUMN public.profiles.share_location IS 'Privacy: whether the user allows the app to use/share their GPS location';
