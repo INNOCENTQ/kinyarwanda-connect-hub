@@ -17,8 +17,24 @@ export default function Auth() {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
 
   useEffect(() => { if (user) navigate("/"); }, [user, navigate]);
+
+  const forgotPassword = async () => {
+    if (!email) { toast.error("Andika imeyili yawe mbere"); return; }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) throw error;
+      setResetSent(true);
+      toast.success("Imeyili yo guhindura ijambo ry'ibanga yoherejwe! Reba muri imeyili yawe.");
+    } catch (err: any) {
+      toast.error(err.message || "Ikibazo ryagaragaye");
+    } finally { setLoading(false); }
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,6 +86,11 @@ export default function Auth() {
             {mode === "signin" ? "Injira" : "Iyandikishe"}
           </Button>
         </form>
+        {mode === "signin" && (
+          <button type="button" onClick={forgotPassword} disabled={loading} className="w-full text-sm text-muted-foreground hover:text-primary hover:underline">
+            {resetSent ? "Imeyili yoherejwe — reba muri imeyili yawe" : "Wibagiwe ijambo ry'ibanga?"}
+          </button>
+        )}
         <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")} className="w-full text-sm text-primary hover:underline">
           {mode === "signin" ? "Nta konti ufite? Iyandikishe" : "Usanzwe ufite konti? Injira"}
         </button>
