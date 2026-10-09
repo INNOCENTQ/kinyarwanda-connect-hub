@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Sprout, MessageCircle, Stethoscope, Store, LogOut, LogIn, Menu, CloudSun, Crown, Shield } from "lucide-react";
+import { Sprout, MessageCircle, Stethoscope, Store, LogOut, LogIn, Menu, CloudSun, Crown, Shield, Settings } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { usePlan } from "@/hooks/usePlan";
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,12 @@ export default function AppNav() {
             </Link>
           ))}
           {user ? (
-            <Button size="sm" variant="ghost" onClick={async () => { await signOut(); nav("/"); }}><LogOut className="h-4 w-4" />Sohoka</Button>
+            <>
+              <Link to="/settings" aria-label="Igenamiterere" className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm ${loc.pathname === "/settings" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}>
+                <Settings className="h-4 w-4" />
+              </Link>
+              <Button size="sm" variant="ghost" onClick={async () => { await signOut(); nav("/"); }}><LogOut className="h-4 w-4" />Sohoka</Button>
+            </>
           ) : (
             <Button size="sm" onClick={() => nav("/auth")}><LogIn className="h-4 w-4" />Injira</Button>
           )}
@@ -51,7 +56,12 @@ export default function AppNav() {
             </Link>
           ))}
           {user ? (
-            <Button variant="ghost" onClick={async () => { await signOut(); setOpen(false); nav("/"); }} className="w-full justify-start"><LogOut className="h-4 w-4" />Sohoka</Button>
+            <>
+              <Link to="/settings" onClick={() => setOpen(false)} className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm ${loc.pathname === "/settings" ? "bg-primary/10 text-primary" : "text-foreground"}`}>
+                <Settings className="h-4 w-4" />Igenamiterere
+              </Link>
+              <Button variant="ghost" onClick={async () => { await signOut(); setOpen(false); nav("/"); }} className="w-full justify-start"><LogOut className="h-4 w-4" />Sohoka</Button>
+            </>
           ) : (
             <Link to="/auth" onClick={() => setOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm text-primary"><LogIn className="h-4 w-4" />Injira</Link>
           )}
