@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Auth = lazy(() => import("./pages/Auth"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Diagnose = lazy(() => import("./pages/Diagnose"));
 const Marketplace = lazy(() => import("./pages/Marketplace"));
 const ChatRoom = lazy(() => import("./pages/ChatRoom"));
@@ -34,6 +35,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/chat" element={<ChatPage />} />
               <Route path="/diagnose" element={<Diagnose />} />
               <Route path="/marketplace" element={<Marketplace />} />
