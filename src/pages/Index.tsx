@@ -1,4 +1,4 @@
-import { ArrowRight, Camera, CloudSun, MapPin, MessageCircle, Mic, Stethoscope, Store } from "lucide-react";
+import { ArrowRight, CloudSun, MapPin, MessageCircle, Stethoscope, Store } from "lucide-react";
 import { Link } from "react-router-dom";
 import AppNav from "@/components/AppNav";
 import AdBanner from "@/components/AdBanner";
@@ -7,37 +7,26 @@ import heroFarmer from "@/assets/rwanda-terraced-farmer.jpg";
 import cattleCare from "@/assets/ankole-cattle-care.jpg";
 import farmMarket from "@/assets/rwanda-farm-market.jpg";
 
-const HOW = [
-  { icon: Camera, title: "1. Fotora", desc: "Fotora itungo ryarwaye cyangwa igihingwa" },
-  { icon: Mic, title: "2. Vuga / Andika", desc: "Tanga ibimenyetso cg ufate ijwi ry'itungo" },
-  { icon: MapPin, title: "3. Akera aho uri", desc: "AI yifashisha aho uri n'ikirere" },
-  { icon: Stethoscope, title: "4. Akira igisubizo", desc: "Indwara, umuti, n'inama zihuse" },
-];
-
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppNav />
       <main className="mx-auto w-full max-w-6xl px-4 py-5 sm:py-8">
-        <section aria-label="Serivisi za Umuhinzi AI" className="grid grid-cols-1 gap-4 md:grid-cols-4 md:grid-rows-2 md:min-h-[650px]">
-          <article className="group relative min-h-[520px] overflow-hidden rounded-lg bg-primary md:col-span-2 md:row-span-2">
-            <img src={heroFarmer} alt="Umuhinzi mu murima w'amaterasi mu Rwanda" width={1600} height={1200} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 motion-reduce:transition-none group-hover:scale-[1.03]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/45 to-transparent" />
-            <div className="relative flex h-full min-h-[520px] flex-col justify-end p-6 sm:p-10">
-              <div className="mb-4 flex items-center gap-3 text-secondary">
-                <span className="h-0.5 w-8 bg-secondary" aria-hidden="true" />
-                <span className="text-xs font-bold uppercase tracking-normal">Ikoranabuhanga ry'umuhinzi</span>
-              </div>
-              <h1 className="max-w-xl text-3xl font-bold leading-tight text-primary-foreground sm:text-5xl">Ubwenge bw'ubukorano mu buhinzi n'ubworozi</h1>
-              <p className="mt-5 max-w-lg text-base leading-relaxed text-primary-foreground/90 sm:text-lg">Menya ikirere cy'aho uri, suzumisha amatungo n'ibihingwa, kandi ubone inama zihuse mu Kinyarwanda.</p>
-              <div className="mt-7">
-                <Button asChild size="lg" variant="secondary" className="font-bold">
-                  <Link to="/diagnose">Tangira nonaha <ArrowRight /></Link>
-                </Button>
-              </div>
+        <section aria-label="Umuhinzi AI" className="relative -mx-4 mb-8 overflow-hidden bg-primary sm:mx-0">
+          <img src={heroFarmer} alt="Umuhinzi mu murima w'amaterasi mu Rwanda" width={1600} height={1200} fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-top" />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/65 to-transparent" />
+          <div className="relative flex min-h-[420px] flex-col justify-end px-6 py-10 sm:min-h-[480px] sm:px-12 sm:py-12">
+            <p className="mb-4 text-sm font-bold text-secondary">UMUJYANAMA W'UMUHINZI N'UMWOROZI</p>
+            <h1 className="text-4xl font-bold leading-tight text-primary-foreground sm:text-5xl">Umuhinzi AI</h1>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-primary-foreground/90 sm:text-lg">Menya ikirere cy'aho uri, suzumisha amatungo n'ibihingwa, kandi ubone inama zihuse mu Kinyarwanda.</p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Button asChild size="lg" variant="secondary" className="font-bold"><Link to="/diagnose">Suzumisha <ArrowRight /></Link></Button>
+              <Button asChild size="lg" variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"><Link to="/weather"><CloudSun />Ikirere cy'aho ndi</Link></Button>
             </div>
-          </article>
-
+          </div>
+        </section>
+        <div className="mb-5 flex items-center justify-between"><h2 className="text-xl font-bold sm:text-2xl">Serivisi zacu</h2><span className="text-sm text-muted-foreground">Mu Kinyarwanda</span></div>
+        <section aria-label="Serivisi za Umuhinzi AI" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Link to="/weather" className="group flex min-h-64 flex-col justify-between rounded-lg border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md motion-reduce:transition-none md:p-7">
             <div className="flex items-start justify-between">
               <span className="flex h-14 w-14 items-center justify-center rounded-lg bg-background text-accent"><CloudSun className="h-8 w-8" /></span>
@@ -75,30 +64,15 @@ const Index = () => {
         <div className="mt-6"><AdBanner /></div>
       </main>
 
-      <section className="mt-8 bg-muted/40 py-14">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="mb-10 max-w-xl"><p className="mb-2 text-sm font-bold text-primary">BYOROSHYE GUKORESHA</p><h2 className="text-2xl sm:text-3xl font-bold text-foreground">Uko ubona ubufasha</h2></div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {HOW.map((h, i) => (
-              <div key={i} className="space-y-3">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary text-primary-foreground"><h.icon className="h-6 w-6" /></div>
-                <h3 className="font-bold text-foreground">{h.title}</h3>
-                <p className="text-sm text-muted-foreground">{h.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <footer className="border-t border-border">
         <div className="mx-auto grid max-w-5xl gap-8 px-4 py-10 md:grid-cols-2">
           <div>
             <h3 className="text-lg font-bold text-foreground">Ibyerekeye Umuhinzi AI</h3>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Umuhinzi AI ni urubuga rukorwa mu Rwanda rufasha abahinzi n'aborozi gukoresha ikoranabuhanga mu buzima bwabo bwa misi yose. Usuye ikirere cy'aho uri, usuzumisha amatungo n'ibihingwa birwaye ukoresheje ifoto cyangwa ijwi, ubone inama zihuse mu Kinyarwanda, kandi uhuzwe n'abandi bahinzi ku isoko — byose bikorwa na telefone ntoya.
+              Umuhinzi AI ni urubuga rukorwa mu Rwanda rufasha abahinzi n'aborozi gukoresha ikoranabuhanga mu buzima bwabo bwa minsi yose. Ureba ikirere cy'aho uri, usuzumisha amatungo n'ibihingwa birwaye ukoresheje ifoto cyangwa ijwi, ubone inama zihuse mu Kinyarwanda, kandi uhuzwe n'abandi bahinzi ku isoko — byose bikorwa na telefone ntoya.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Iyi ngingo yatewe n'igitekerezo cya <span className="font-bold text-foreground">MIGAMBI Innocent</span>, umunyeshuri w'ikoranabuhanga (Level 4, Software Development), ashaka ko umuhinzi wese wumva ubwenge bw'ubukorano mu kibanza cye.
+              Uru rubuga rwaturutse ku gitekerezo cya <span className="font-bold text-foreground">MIGAMBI Innocent</span>, umunyeshuri w'ikoranabuhanga (Level 4, Software Development), agamije kugeza ikoranabuhanga ku bahinzi n’aborozi.
             </p>
           </div>
           <div className="md:text-right">
@@ -112,7 +86,7 @@ const Index = () => {
           </div>
         </div>
         <div className="border-t border-border py-6 text-center text-sm text-muted-foreground">
-          © 2026 Umuhinzi AI — MIGAMBI Innocent 🇷🇼
+          © 2026 Umuhinzi AI — MIGAMBI Innocent
         </div>
       </footer>
     </div>

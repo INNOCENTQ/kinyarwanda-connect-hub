@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import { usePlan } from "@/hooks/usePlan";
+import { useLocationPreference } from "@/hooks/useLocationPreference";
 
 const DIAGNOSE_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/diagnose`;
 
@@ -22,6 +23,7 @@ const fileToBase64 = (f: File | Blob) => new Promise<string>((res, rej) => {
 
 function MediaInput({ type, onResult }: { type: "livestock" | "crop"; onResult: (r: string) => void }) {
   const { user } = useAuth();
+  const locationPreference = useLocationPreference();
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
   const [audio, setAudio] = useState<Blob | null>(null);
@@ -59,6 +61,8 @@ function MediaInput({ type, onResult }: { type: "livestock" | "crop"; onResult: 
   const stopRec = () => { mediaRec.current?.stop(); setRecording(false); };
 
   const getLoc = () => {
+    if (locationPreference.loading) return;
+    if (!locationPreference.allowed) { toast.error("GPS ntiyemewe mu igenamiterere ryawe"); return; }
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(p => setLocation({ latitude: p.coords.latitude, longitude: p.coords.longitude }), () => toast.error("Ntibyashobotse kubona aho uri"));
   };
@@ -71,7 +75,7 @@ function MediaInput({ type, onResult }: { type: "livestock" | "crop"; onResult: 
       if (image) { payload.imageBase64 = await fileToBase64(image); payload.imageMime = image.type; }
       if (audio) { payload.audioBase64 = await fileToBase64(audio); payload.audioMime = "audio/webm"; }
       if (symptoms) payload.symptoms = symptoms;
-      if (location) payload.location = location;
+      if (location && locationPreference.allowed) payload.location = location;
 
       const { data: { session } } = await supabase.auth.getSession();
       const r = await fetch(DIAGNOSE_URL, {
@@ -91,7 +95,7 @@ function MediaInput({ type, onResult }: { type: "livestock" | "crop"; onResult: 
           user_id: user.id, diagnosis_type: type,
           input_type: image && audio ? "image+audio" : image ? "image" : audio ? "audio" : "text",
           symptoms_text: symptoms || null, ai_diagnosis: data.result,
-          latitude: location?.latitude, longitude: location?.longitude,
+          latitude: locationPreference.allowed ? location?.latitude : undefined, longitude: locationPreference.allowed ? location?.longitude : undefined,
         });
       }
     } catch (e: any) { toast.error(e.message); } finally { setLoading(false); }

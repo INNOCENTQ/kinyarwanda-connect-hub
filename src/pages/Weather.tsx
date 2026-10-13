@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { CloudSun, CloudRain, Sun, Cloud, CloudSnow, MapPin, Loader2, Droplets, Wind, Sparkles, Thermometer } from "lucide-react";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
+import { useLocationPreference } from "@/hooks/useLocationPreference";
 
 const WEATHER_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/weather-advice`;
 
@@ -44,6 +45,7 @@ type Current = { temp: number; feels: number; humidity: number; wind: number; co
 type Daily = { date: string; min: number; max: number; rain: number; code: number };
 
 export default function Weather() {
+  const locationPreference = useLocationPreference();
   const [loading, setLoading] = useState(true);
   const [coords, setCoords] = useState<{ lat: number; lon: number; name?: string } | null>(null);
   const [current, setCurrent] = useState<Current | null>(null);
@@ -51,11 +53,19 @@ export default function Weather() {
   const [crop, setCrop] = useState("Rusange");
   const [advice, setAdvice] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
+  const [refreshVersion, setRefreshVersion] = useState(0);
 
   const loadCoords = () => {
+    if (locationPreference.loading) return;
     setLoading(true);
     setCurrent(null);
     setDaily([]);
+    setAdvice("");
+    setRefreshVersion(v => v + 1);
+    if (!locationPreference.allowed) {
+      setCoords({ lat: -1.9577, lon: 30.1127, name: "Kigali — GPS ntikoreshwa" });
+      return;
+    }
     if (!navigator.geolocation) {
       toast.error("Telefoni yawe ntiyemera kumenya aho uri. Dukoresheje Kigali.");
       setCoords({ lat: -1.9577, lon: 30.1127, name: "Kigali" });
@@ -78,15 +88,17 @@ export default function Weather() {
     );
   };
 
-  useEffect(() => { loadCoords(); }, []);
+  useEffect(() => { if (!locationPreference.loading) loadCoords(); }, [locationPreference.loading, locationPreference.allowed]);
 
   // Fetch weather
   useEffect(() => {
     if (!coords) return;
+    const controller = new AbortController();
     (async () => {
       try {
         const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Africa%2FKigali&forecast_days=7`;
-        const r = await fetch(url);
+        const r = await fetch(url, { signal: controller.signal });
+        if (!r.ok) throw new Error("Weather unavailable");
         const d = await r.json();
         setCurrent({
           temp: Math.round(d.current.temperature_2m),
@@ -104,12 +116,14 @@ export default function Weather() {
         }));
         setDaily(days);
       } catch {
+        if (controller.signal.aborted) return;
         toast.error("Ntibyashobotse kubona ikirere.");
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     })();
-  }, [coords?.lat, coords?.lon]);
+    return () => controller.abort();
+  }, [coords?.lat, coords?.lon, refreshVersion]);
 
   // Reverse geocode: akarere / umurenge / akagari (non-blocking)
   useEffect(() => {
@@ -183,7 +197,7 @@ export default function Weather() {
               <MapPin className="h-4 w-4" /> {coords?.name || (coords ? `${coords.lat.toFixed(2)}, ${coords.lon.toFixed(2)}` : "Turacyareba...")}
             </p>
           </div>
-          <Button variant="outline" size="sm" onClick={loadCoords}><MapPin className="h-4 w-4" />Vugurura</Button>
+          <Button variant="outline" size="sm" disabled={loading} onClick={loadCoords}><MapPin className="h-4 w-4" />Vugurura</Button>
         </div>
 
         {loading ? (

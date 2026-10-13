@@ -10,8 +10,10 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { User, Lock, ShieldCheck, Languages, Loader2, MapPin } from "lucide-react";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Settings() {
+  const queryClient = useQueryClient();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
@@ -66,12 +68,15 @@ export default function Settings() {
   };
 
   const updateGps = () => {
+    if (!user) return;
+    if (!shareLocation) { toast.error("Banza wemerere ikoreshwa rya GPS mu buzima bwite"); return; }
+    const userId = user.id;
     if (!navigator.geolocation) { toast.error("Telefoni yawe ntifite GPS"); return; }
     setLocating(true);
     navigator.geolocation.getCurrentPosition(async (pos) => {
       const { error } = await supabase.from("profiles").update({
         latitude: pos.coords.latitude, longitude: pos.coords.longitude,
-      }).eq("user_id", user!.id);
+      }).eq("user_id", userId);
       setLocating(false);
       if (error) toast.error("Ntibyashoboye kubika aho uri"); else toast.success("Aho uri byabitswe!");
     }, () => { setLocating(false); toast.error("Ntwashoboye kubona aho uri"); },
@@ -90,11 +95,15 @@ export default function Settings() {
 
   const savePrivacy = async (value: boolean) => {
     if (!user) return;
+    const previous = shareLocation;
     setShareLocation(value);
     setSavingPrivacy(true);
     const { error } = await supabase.from("profiles").update({ share_location: value }).eq("user_id", user.id);
     setSavingPrivacy(false);
-    if (error) toast.error("Ntibyashoboye kubika"); else toast.success("Igenamiterere ryabitswe!");
+    if (error) { setShareLocation(previous); toast.error("Ntibyashoboye kubika"); } else {
+      queryClient.setQueryData(["location-preference", user.id], value);
+      toast.success("Igenamiterere ryabitswe!");
+    }
   };
 
   const changeLang = (v: string) => {
@@ -112,7 +121,7 @@ export default function Settings() {
         <h1 className="text-2xl font-bold text-foreground">Igenamiterere</h1>
 
         {/* Profile */}
-        <section className="bg-card border border-border rounded-2xl p-6 space-y-4">
+        <section className="border-t border-border py-6 space-y-4">
           <h2 className="flex items-center gap-2 font-semibold text-foreground"><User className="h-5 w-5 text-primary" />Umwirondoro</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <div><Label>Amazina yombi</Label><Input value={fullName} onChange={e => setFullName(e.target.value)} /></div>
@@ -132,7 +141,7 @@ export default function Settings() {
         </section>
 
         {/* Password */}
-        <section className="bg-card border border-border rounded-2xl p-6 space-y-4">
+        <section className="border-t border-border py-6 space-y-4">
           <h2 className="flex items-center gap-2 font-semibold text-foreground"><Lock className="h-5 w-5 text-primary" />Ijambo ry'ibanga</h2>
           <form onSubmit={changePassword} className="space-y-4">
             <div><Label>Ijambo ry'ibanga uri gukoresha</Label><Input type="password" value={currentPw} onChange={e => setCurrentPw(e.target.value)} required /></div>
@@ -147,19 +156,19 @@ export default function Settings() {
         </section>
 
         {/* Privacy */}
-        <section className="bg-card border border-border rounded-2xl p-6 space-y-4">
+        <section className="border-t border-border py-6 space-y-4">
           <h2 className="flex items-center gap-2 font-semibold text-foreground"><ShieldCheck className="h-5 w-5 text-primary" />Ubuzima bwite</h2>
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="text-sm font-medium text-foreground">Emerera ikoreshwa ry'aho ndi (GPS)</p>
               <p className="text-xs text-muted-foreground">Bifasha ikirere n'isoko kukwereka amakuru y'aho uri hafi</p>
             </div>
-            <Switch checked={shareLocation} onCheckedChange={savePrivacy} disabled={savingPrivacy} />
+            <Switch aria-label="Emerera ikoreshwa ry’aho ndi" checked={shareLocation} onCheckedChange={savePrivacy} disabled={savingPrivacy} />
           </div>
         </section>
 
         {/* Language */}
-        <section className="bg-card border border-border rounded-2xl p-6 space-y-4">
+        <section className="border-t border-border py-6 space-y-4">
           <h2 className="flex items-center gap-2 font-semibold text-foreground"><Languages className="h-5 w-5 text-primary" />Ururimi</h2>
           <div className="max-w-xs">
             <Label>Hitamo ururimi</Label>
