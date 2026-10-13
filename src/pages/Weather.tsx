@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { CloudSun, CloudRain, Sun, Cloud, CloudSnow, MapPin, Loader2, Droplets, Wind, Sparkles, Thermometer } from "lucide-react";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
+import { useLocationPreference } from "@/hooks/useLocationPreference";
 
 const WEATHER_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/weather-advice`;
 
@@ -44,6 +45,7 @@ type Current = { temp: number; feels: number; humidity: number; wind: number; co
 type Daily = { date: string; min: number; max: number; rain: number; code: number };
 
 export default function Weather() {
+  const locationPreference = useLocationPreference();
   const [loading, setLoading] = useState(true);
   const [coords, setCoords] = useState<{ lat: number; lon: number; name?: string } | null>(null);
   const [current, setCurrent] = useState<Current | null>(null);
@@ -54,11 +56,16 @@ export default function Weather() {
   const [refreshVersion, setRefreshVersion] = useState(0);
 
   const loadCoords = () => {
+    if (locationPreference.loading) return;
     setLoading(true);
     setCurrent(null);
     setDaily([]);
     setAdvice("");
     setRefreshVersion(v => v + 1);
+    if (!locationPreference.allowed) {
+      setCoords({ lat: -1.9577, lon: 30.1127, name: "Kigali — GPS ntikoreshwa" });
+      return;
+    }
     if (!navigator.geolocation) {
       toast.error("Telefoni yawe ntiyemera kumenya aho uri. Dukoresheje Kigali.");
       setCoords({ lat: -1.9577, lon: 30.1127, name: "Kigali" });
@@ -81,7 +88,7 @@ export default function Weather() {
     );
   };
 
-  useEffect(() => { loadCoords(); }, []);
+  useEffect(() => { if (!locationPreference.loading) loadCoords(); }, [locationPreference.loading, locationPreference.allowed]);
 
   // Fetch weather
   useEffect(() => {

@@ -10,8 +10,10 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { User, Lock, ShieldCheck, Languages, Loader2, MapPin } from "lucide-react";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Settings() {
+  const queryClient = useQueryClient();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
@@ -67,6 +69,7 @@ export default function Settings() {
 
   const updateGps = () => {
     if (!user) return;
+    if (!shareLocation) { toast.error("Banza wemerere ikoreshwa rya GPS mu buzima bwite"); return; }
     const userId = user.id;
     if (!navigator.geolocation) { toast.error("Telefoni yawe ntifite GPS"); return; }
     setLocating(true);
@@ -97,7 +100,10 @@ export default function Settings() {
     setSavingPrivacy(true);
     const { error } = await supabase.from("profiles").update({ share_location: value }).eq("user_id", user.id);
     setSavingPrivacy(false);
-    if (error) { setShareLocation(previous); toast.error("Ntibyashoboye kubika"); } else toast.success("Igenamiterere ryabitswe!");
+    if (error) { setShareLocation(previous); toast.error("Ntibyashoboye kubika"); } else {
+      queryClient.setQueryData(["location-preference", user.id], value);
+      toast.success("Igenamiterere ryabitswe!");
+    }
   };
 
   const changeLang = (v: string) => {

@@ -119,12 +119,14 @@ function NewListingDialog({ onDone }: { onDone: () => void }) {
   const submit = async () => {
     if (!user) return;
     setSaving(true);
+    let uploadedPath: string | null = null;
     try {
       let image_urls: string[] = [];
       if (file) {
         const path = `${user.id}/${Date.now()}-${file.name}`;
         const { error: upErr } = await supabase.storage.from("listing-images").upload(path, file);
         if (upErr) throw upErr;
+        uploadedPath = path;
         const { data: pub } = supabase.storage.from("listing-images").getPublicUrl(path);
         image_urls = [pub.publicUrl];
       }
@@ -138,7 +140,10 @@ function NewListingDialog({ onDone }: { onDone: () => void }) {
       if (error) throw error;
       toast.success("Byongewemo!");
       onDone();
-    } catch (e: any) { toast.error(e.message); } finally { setSaving(false); }
+    } catch (e: any) {
+      if (uploadedPath) await supabase.storage.from("listing-images").remove([uploadedPath]);
+      toast.error(e.message);
+    } finally { setSaving(false); }
   };
 
   return (
