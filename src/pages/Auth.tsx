@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Sprout, Loader2 } from "lucide-react";
+import { Sprout, Loader2, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Auth() {
@@ -18,6 +18,7 @@ export default function Auth() {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [resetSent, setResetSent] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => { if (user) navigate("/"); }, [user, navigate]);
 
@@ -46,7 +47,7 @@ export default function Auth() {
           options: { emailRedirectTo: window.location.origin, data: { full_name: fullName, phone } },
         });
         if (error) throw error;
-        toast.success("Konti yawe yashyizweho! Injira.");
+        toast.success("Konti yawe yashyizweho. Reba imeyili yawe niba usabwa kuyemeza.");
         setMode("signin");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -60,8 +61,9 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md bg-card border border-border rounded-2xl p-8 space-y-6 shadow-lg">
+    <div className="min-h-screen bg-background px-4 py-8 sm:py-12">
+      <Button asChild variant="ghost" className="mb-8"><Link to="/"><ArrowLeft />Ahabanza</Link></Button>
+      <div className="mx-auto w-full max-w-md space-y-7 py-4 sm:py-10">
         <Link to="/" className="flex items-center gap-2 justify-center">
           <Sprout className="h-7 w-7 text-primary" />
           <span className="text-2xl font-bold text-foreground">Umuhinzi AI</span>
@@ -75,25 +77,25 @@ export default function Auth() {
         <form onSubmit={submit} className="space-y-4">
           {mode === "signup" && (
             <>
-              <div><Label>Amazina yombi</Label><Input value={fullName} onChange={e => setFullName(e.target.value)} required /></div>
-              <div><Label>Telefoni</Label><Input value={phone} onChange={e => setPhone(e.target.value)} placeholder="07XXXXXXXX" required /></div>
+              <div><Label htmlFor="full-name">Amazina yombi</Label><Input id="full-name" autoComplete="name" value={fullName} onChange={e => setFullName(e.target.value)} required /></div>
+              <div><Label htmlFor="phone">Telefoni</Label><Input id="phone" type="tel" autoComplete="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="07XXXXXXXX" required /></div>
             </>
           )}
-          <div><Label>Imeyili</Label><Input type="email" value={email} onChange={e => setEmail(e.target.value)} required /></div>
-          <div><Label>Ijambobanga</Label><Input type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} /></div>
+          <div><Label htmlFor="email">Imeyili</Label><Input id="email" autoComplete="email" placeholder="izina@example.com" type="email" value={email} onChange={e => setEmail(e.target.value)} required /></div>
+          <div className="space-y-2"><Label htmlFor="password">Ijambo ry'ibanga</Label><div className="relative"><Input id="password" className="pr-12" autoComplete={mode === "signin" ? "current-password" : "new-password"} type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} required minLength={6} /><Button type="button" variant="ghost" size="icon" className="absolute right-0 top-0" aria-label={showPassword ? "Hisha ijambo ry'ibanga" : "Erekana ijambo ry'ibanga"} onClick={() => setShowPassword(!showPassword)}>{showPassword ? <EyeOff /> : <Eye />}</Button></div></div>
           <Button type="submit" className="w-full" disabled={loading}>
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
             {mode === "signin" ? "Injira" : "Iyandikishe"}
           </Button>
         </form>
         {mode === "signin" && (
-          <button type="button" onClick={forgotPassword} disabled={loading} className="w-full text-sm text-muted-foreground hover:text-primary hover:underline">
+          <Button type="button" variant="link" onClick={forgotPassword} disabled={loading} className="h-auto w-full whitespace-normal text-center text-muted-foreground">
             {resetSent ? "Imeyili yoherejwe — reba muri imeyili yawe" : "Wibagiwe ijambo ry'ibanga?"}
-          </button>
+          </Button>
         )}
-        <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")} className="w-full text-sm text-primary hover:underline">
+        <Button variant="link" disabled={loading} onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setResetSent(false); }} className="w-full whitespace-normal">
           {mode === "signin" ? "Nta konti ufite? Iyandikishe" : "Usanzwe ufite konti? Injira"}
-        </button>
+        </Button>
       </div>
     </div>
   );

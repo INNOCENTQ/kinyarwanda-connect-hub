@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 46 47% 94%;
+    --background: 120 14% 97%;
     --foreground: 143 50% 16%;
 
     --card: 0 0% 100%;
@@ -19,7 +19,7 @@
     --secondary: 43 86% 63%;
     --secondary-foreground: 143 50% 20%;
 
-    --muted: 84 24% 88%;
+    --muted: 120 14% 92%;
     --muted-foreground: 143 15% 40%;
 
     --accent: 84 48% 45%;
@@ -97,4 +97,12 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Sora', sans-serif;
   }
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { margin: 0; letter-spacing: 0; }
+  a, button, input, textarea { -webkit-tap-highlight-color: transparent; }
+  a:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 4px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 }
