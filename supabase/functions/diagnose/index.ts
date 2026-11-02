@@ -27,7 +27,12 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
   try {
-    const { type, imageBase64, imageMime, audioBase64, audioMime, symptoms, location, weather } = await req.json();
+    const body = await req.json().catch(() => ({}));
+    const { type, imageMime, audioMime, location, weather } = body;
+    const imageBase64 = typeof body.imageBase64 === 'string' ? body.imageBase64 : '';
+    const audioBase64 = typeof body.audioBase64 === 'string' ? body.audioBase64 : '';
+    const symptoms = typeof body.symptoms === 'string' ? body.symptoms.slice(0, 1000) : '';
+    const subject = typeof body.subject === 'string' ? body.subject.slice(0, 40) : '';
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) throw new Error('LOVABLE_API_KEY missing');
 
@@ -37,6 +42,9 @@ Deno.serve(async (req) => {
     const sb = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_ANON_KEY')!, { global: { headers: { Authorization: authHeader } } });
     const { data: { user } } = await sb.auth.getUser(authHeader.replace('Bearer ', ''));
     if (!user) return json({ error: 'Banza winjire.' }, 401);
+    if (type !== 'crop' && type !== 'livestock') return json({ error: 'Hitamo itungo cyangwa igihingwa.' }, 400);
+    if (!imageBase64 && !audioBase64 && !symptoms.trim()) return json({ error: 'Tanga ifoto, ijwi cyangwa ibimenyetso.' }, 400);
+    if (imageBase64.length > 8_000_000 || audioBase64.length > 8_000_000) return json({ error: 'Ifoto cyangwa ijwi ni binini cyane.' }, 413);
     const { data: premium } = await sb.rpc('is_premium', { _uid: user.id });
     if (!premium) {
       const start = new Date(); start.setUTCDate(1); start.setUTCHours(0, 0, 0, 0);
@@ -47,11 +55,12 @@ Deno.serve(async (req) => {
     const userContent: any[] = [];
     let prompt = '';
     if (type === 'crop') {
-      prompt = `Suzuma iki gihingwa.`;
+      prompt = `Suzuma iki gihingwa${subject ? ` (${subject})` : ''}.`;
+      if (symptoms) prompt += `\nIbimenyetso umuhinzi yatanze: ${symptoms}`;
       if (location) prompt += `\nAho giherereye: ${location.district || ''} ${location.sector || ''} (lat:${location.latitude}, lng:${location.longitude}).`;
       if (weather) prompt += `\nIkirere: ${weather}.`;
     } else {
-      prompt = `Suzuma iri tungo.`;
+      prompt = `Suzuma iri tungo${subject ? ` (${subject})` : ''}.`;
       if (symptoms) prompt += `\nIbimenyetso umuhinzi yatanze: ${symptoms}`;
       if (audioBase64) prompt += `\n(Hari n'ijwi ry'itungo ryometseho - rikoreshe mu gusuzuma.)`;
     }
@@ -60,7 +69,7 @@ Deno.serve(async (req) => {
       userContent.push({ type: 'image_url', image_url: { url: `data:${imageMime || 'image/jpeg'};base64,${imageBase64}` } });
     }
     if (audioBase64) {
-      userContent.push({ type: 'input_audio', input_audio: { data: audioBase64, format: (audioMime || 'audio/webm').split('/')[1] } });
+      userContent.push({ type: 'input_audio', input_audio: { data: audioBase64, format: String(audioMime || 'audio/webm').split('/')[1].split(';')[0] } });
     }
 
     const resp = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
