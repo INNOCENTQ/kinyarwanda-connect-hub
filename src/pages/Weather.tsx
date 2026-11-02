@@ -149,16 +149,15 @@ export default function Weather() {
         if (name) setCoords((c) => (c ? { ...c, name } : c));
         else throw new Error("no name");
       } catch {
-        // fallback: open-meteo
+        // fallback: OpenStreetMap (Nominatim)
         try {
           const g2 = await fetch(
-            `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${coords.lat}&longitude=${coords.lon}&language=en&count=1`
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${coords.lat}&lon=${coords.lon}&zoom=14&accept-language=en`
           );
-          const gd2 = await g2.json();
-          const res = gd2?.results?.[0];
-          if (res) {
-            const parts = [res.name, res.admin2, res.admin1].filter(Boolean);
-            setCoords((c) => (c ? { ...c, name: Array.from(new Set(parts)).join(", ") } : c));
+          const a = (await g2.json())?.address;
+          if (a) {
+            const parts = [a.suburb || a.village || a.town || a.city, a.city_district || a.county || a.state_district, a.state].filter(Boolean);
+            if (parts.length) setCoords((c) => (c ? { ...c, name: Array.from(new Set(parts)).join(", ") } : c));
           }
         } catch {
           // iguma ku coordinates

@@ -13,7 +13,7 @@ const Index = () => {
       <AppNav />
       <main className="mx-auto w-full max-w-6xl px-4 py-5 sm:py-8">
         <section aria-label="Umuhinzi AI" className="relative -mx-4 mb-8 overflow-hidden bg-primary sm:mx-0">
-          <img src={heroFarmer} alt="Umuhinzi mu murima w'amaterasi mu Rwanda" width={1600} height={1200} fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-top" />
+          <img src={heroFarmer} alt="Umuhinzi mu murima w'amaterasi mu Rwanda" width={1600} height={1200} {...{ fetchpriority: "high" }} className="absolute inset-0 h-full w-full object-cover object-top" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/65 to-transparent" />
           <div className="relative flex min-h-[420px] flex-col justify-end px-6 py-10 sm:min-h-[480px] sm:px-12 sm:py-12">
             <p className="mb-4 text-sm font-bold text-secondary">UMUJYANAMA W'UMUHINZI N'UMWOROZI</p>

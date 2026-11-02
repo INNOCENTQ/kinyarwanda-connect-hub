@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { Megaphone, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 type Ad = { id: string; business_name: string; title: string; description: string | null; phone: string | null; link_url: string | null; image_url: string | null };
 
-export default function AdBanner({ limit = 3 }: { limit?: number }) {
+const safeUrl = (u: string | null) => (u && /^https?:\/\//i.test(u) ? u : null);
+
+const AdBanner = forwardRef<HTMLElement, { limit?: number }>(function AdBanner({ limit = 3 }, ref) {
   const [ads, setAds] = useState<Ad[]>([]);
   useEffect(() => {
     (supabase as any).from("ads").select("id,business_name,title,description,phone,link_url,image_url").eq("active", true).order("created_at", { ascending: false }).limit(limit)
@@ -12,7 +14,7 @@ export default function AdBanner({ limit = 3 }: { limit?: number }) {
   }, [limit]);
   if (!ads.length) return null;
   return (
-    <section aria-label="Amatangazo" className="space-y-2">
+    <section ref={ref} aria-label="Amatangazo" className="space-y-2">
       <p className="flex items-center gap-1 text-xs font-bold uppercase text-muted-foreground"><Megaphone className="h-3 w-3" /> Amatangazo</p>
       <div className="grid gap-3 sm:grid-cols-3">
         {ads.map(a => (
@@ -24,7 +26,7 @@ export default function AdBanner({ limit = 3 }: { limit?: number }) {
               {a.description && <p className="line-clamp-2 text-xs text-muted-foreground">{a.description}</p>}
               <div className="mt-1 flex gap-3 text-xs font-bold text-primary">
                 {a.phone && <a href={`tel:${a.phone}`} className="flex items-center gap-1"><Phone className="h-3 w-3" />{a.phone}</a>}
-                {a.link_url && <a href={a.link_url} target="_blank" rel="noopener noreferrer sponsored">Sura</a>}
+                {safeUrl(a.link_url) && <a href={safeUrl(a.link_url)!} target="_blank" rel="noopener noreferrer sponsored">Sura</a>}
               </div>
             </div>
           </div>
@@ -32,4 +34,6 @@ export default function AdBanner({ limit = 3 }: { limit?: number }) {
       </div>
     </section>
   );
-}
+});
+
+export default AdBanner;
