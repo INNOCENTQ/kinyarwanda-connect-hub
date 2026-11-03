@@ -161,7 +161,6 @@ export function SellerPanel({ onPromote, onChanged }: { onPromote: (id: string) 
 }
 
 export function CustomerPanel() {
-  const nav = useNavigate();
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-2">
