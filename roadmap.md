@@ -11,5 +11,5 @@ Not exercised: delivery of password-reset emails, AI responses and payment appro
 - [x] Weather place-name fallback replaced (old fallback service no longer exists).
 - [x] Ads links accept only web addresses; chat function validates and trims input.
 # AI chat + market roles
-- [ ] AI chat: better Kinyarwanda answers, clear errors, keep conversation, new-chat/stop buttons, input always visible.
-- [ ] Seller and customer sections on the market (my listings / my conversations).
+- [x] AI chat: better Kinyarwanda answers, clear errors, keep conversation, new-chat/stop buttons, input always visible.
+- [x] Seller and customer sections on the market (my listings / my conversations).
