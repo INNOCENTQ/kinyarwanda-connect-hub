@@ -206,7 +206,7 @@ export default function FarmingChat() {
                 }`}
               >
                 {m.role === "assistant" ? (
-                  <div className="prose prose-sm max-w-none text-foreground prose-p:my-1 prose-ul:my-1 prose-li:my-0.5 prose-strong:text-foreground">
+                  <div className="prose prose-sm max-w-none text-foreground [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 prose-p:my-1 prose-ul:my-1 prose-li:my-0.5 prose-strong:text-foreground">
                     <ReactMarkdown>{m.content}</ReactMarkdown>
                   </div>
                 ) : (
