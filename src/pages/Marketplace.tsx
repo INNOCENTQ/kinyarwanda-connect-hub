@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 import AdBanner from "@/components/AdBanner";
 import PayDialog from "@/components/PayDialog";
 import { PRICES } from "@/hooks/usePlan";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SellerPanel, CustomerPanel } from "@/components/MarketMine";
 
 type Listing = { id: string; user_id: string; title: string; description: string; category: string; product_type: string; quantity: number; unit: string; price: number; district: string; sector: string; image_urls: string[]; created_at: string; featured_until?: string | null };
 
@@ -25,6 +27,7 @@ export default function Marketplace() {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState<string>("all");
   const [promote, setPromote] = useState<string | null>(null);
+  const [tab, setTab] = useState("market");
 
   const load = async () => {
     setLoading(true);
@@ -73,12 +76,21 @@ export default function Marketplace() {
             {user && (
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild><Button><Plus className="h-4 w-4" />Ongeraho</Button></DialogTrigger>
-                <NewListingDialog onDone={() => { setOpen(false); load(); }} />
+                <NewListingDialog onDone={() => { setOpen(false); load(); setTab("seller"); }} />
               </Dialog>
             )}
           </div>
         </div>
 
+        <Tabs value={tab} onValueChange={setTab} className="space-y-6">
+          {user && (
+            <TabsList className="grid w-full grid-cols-3 sm:w-auto sm:inline-grid">
+              <TabsTrigger value="market">Isoko</TabsTrigger>
+              <TabsTrigger value="seller">Ndi umucuruzi</TabsTrigger>
+              <TabsTrigger value="customer">Ndi umuguzi</TabsTrigger>
+            </TabsList>
+          )}
+          <TabsContent value="market" className="mt-0">
         {loading ? <div className="flex justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div> : (
           listings.length === 0 ? <p className="text-center text-muted-foreground py-12">Nta bicuruzwa biriho ubu.</p> : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -103,6 +115,14 @@ export default function Marketplace() {
             </div>
           )
         )}
+          </TabsContent>
+          {user && (
+            <>
+              <TabsContent value="seller" className="mt-0"><SellerPanel onPromote={setPromote} onChanged={load} /></TabsContent>
+              <TabsContent value="customer" className="mt-0"><CustomerPanel /></TabsContent>
+            </>
+          )}
+        </Tabs>
         <div className="mt-8"><AdBanner /></div>
       </main>
       <PayDialog open={!!promote} onOpenChange={o => !o && setPromote(null)} kind="featured" amount={PRICES.featured} referenceId={promote ?? undefined} title="Kwamamaza igicuruzwa (iminsi 7)" />
