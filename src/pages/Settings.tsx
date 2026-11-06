@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { User, Lock, ShieldCheck, Languages, Loader2, MapPin } from "lucide-react";
 import { toast } from "sonner";
+import { isPhoneAccount } from "@/lib/phone-auth";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function Settings() {
@@ -180,7 +181,7 @@ export default function Settings() {
               </SelectContent>
             </Select>
           </div>
-          <p className="text-xs text-muted-foreground">Amakonti: {user.email}</p>
+          <p className="text-xs text-muted-foreground">Konti: {isPhoneAccount(user.email) ? `Telefoni ${phone}` : user.email}</p>
         </section>
       </main>
     </div>
