@@ -38,7 +38,7 @@ function RoomList({ role }: { role: "buyer" | "seller" }) {
   if (rooms.length === 0)
     return <p className="text-sm text-muted-foreground py-6 text-center">{role === "buyer" ? "Nturavugana n'umucuruzi n'umwe." : "Nta muguzi urakwandikira."}</p>;
   return (
-    <ul className="divide-y divide-border rounded-xl border border-border bg-card">
+    <ul className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
       {rooms.map((r) => (
         <li key={r.id}>
           <button onClick={() => nav(`/chat-room/${r.id}`)} className="flex w-full items-center gap-3 p-3 text-left hover:bg-muted transition-colors">
@@ -106,8 +106,8 @@ export function SellerPanel({ onPromote, onChanged }: { onPromote: (id: string) 
     <div className="space-y-6">
       <div className="grid grid-cols-3 gap-3">
         {[["Byose", items.length], ["Ku isoko", active], ["Byagurishijwe", sold]].map(([l, v]) => (
-          <div key={l as string} className="rounded-xl border border-border bg-card p-3 text-center">
-            <p className="text-2xl font-bold text-foreground">{v}</p>
+          <div key={l as string} className="rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/15 p-3 text-center shadow-sm">
+            <p className="font-heading text-2xl font-bold text-primary">{v}</p>
             <p className="text-xs text-muted-foreground">{l}</p>
           </div>
         ))}
@@ -122,7 +122,7 @@ export function SellerPanel({ onPromote, onChanged }: { onPromote: (id: string) 
               {items.map((i) => {
                 const featured = i.featured_until && new Date(i.featured_until) > new Date();
                 return (
-                  <li key={i.id} className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card p-3">
+                  <li key={i.id} className="flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-card p-3 shadow-sm transition-shadow hover:shadow-md">
                     {i.image_urls?.[0]
                       ? <img src={i.image_urls[0]} alt="" className="h-14 w-14 rounded-lg object-cover" />
                       : <span className="flex h-14 w-14 items-center justify-center rounded-lg bg-muted"><Package className="h-5 w-5 text-muted-foreground" /></span>}
