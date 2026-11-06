@@ -4,6 +4,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { usePlan } from "@/hooks/usePlan";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const baseLinks = [
   { to: "/", label: "Ahabanza", icon: Sprout },
@@ -21,6 +23,17 @@ export default function AppNav() {
   const loc = useLocation();
   const nav = useNavigate();
   const [open, setOpen] = useState(false);
+  const { data: profileName } = useQuery({
+    queryKey: ["profile-name", user?.id],
+    enabled: !!user,
+    staleTime: 5 * 60 * 1000,
+    queryFn: async () => {
+      const { data } = await supabase.from("profiles").select("full_name").eq("user_id", user!.id).maybeSingle();
+      return data?.full_name || "";
+    },
+  });
+  const displayName = profileName || (user?.user_metadata as any)?.full_name || "";
+  const firstName = displayName.split(" ")[0];
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md">
@@ -46,6 +59,12 @@ export default function AppNav() {
             <Button size="sm" onClick={() => nav("/auth")}><LogIn className="h-4 w-4" />Injira</Button>
           )}
         </nav>
+        {user && displayName && (
+          <Link to="/settings" title={displayName} className="ml-auto mr-2 lg:ml-3 lg:mr-0 flex items-center gap-2 rounded-full bg-primary/10 pl-1 pr-3 py-1 text-sm font-semibold text-primary max-w-[160px]">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">{displayName.charAt(0).toUpperCase()}</span>
+            <span className="truncate">Muraho, {firstName}</span>
+          </Link>
+        )}
         <Button variant="ghost" size="icon" className="lg:hidden" aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? "Funga urutonde" : "Fungura urutonde"} onClick={() => setOpen(!open)}>{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</Button>
       </div>
       {open && (
