@@ -1,4 +1,4 @@
-import { ArrowRight, CloudSun, MapPin, MessageCircle, Stethoscope, Store } from "lucide-react";
+import { ArrowRight, CloudSun, MapPin, MessageCircle, ShieldCheck, Sparkles, Sprout, Stethoscope, Store, Sun } from "lucide-react";
 import { Link } from "react-router-dom";
 import AppNav from "@/components/AppNav";
 import AdBanner from "@/components/AdBanner";
@@ -7,90 +7,81 @@ import heroFarmer from "@/assets/rwanda-terraced-farmer.jpg";
 import cattleCare from "@/assets/ankole-cattle-care.jpg";
 import farmMarket from "@/assets/rwanda-farm-market.jpg";
 
-const Index = () => {
-  return (
-    <div className="min-h-screen bg-background">
-      <AppNav />
-      <main className="mx-auto w-full max-w-6xl px-4 py-5 sm:py-8">
-        <section aria-label="Umuhinzi AI" className="relative -mx-4 mb-8 overflow-hidden bg-primary sm:mx-0">
-          <img src={heroFarmer} alt="Umuhinzi mu murima w'amaterasi mu Rwanda" width={1600} height={1200} {...{ fetchpriority: "high" }} className="absolute inset-0 h-full w-full object-cover object-top" />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/65 to-transparent" />
-          <div className="relative flex min-h-[420px] flex-col justify-end px-6 py-10 sm:min-h-[480px] sm:px-12 sm:py-12">
-            <p className="mb-4 text-sm font-bold text-secondary">UMUJYANAMA W'UMUHINZI N'UMWOROZI</p>
-            <h1 className="text-4xl font-bold leading-tight text-primary-foreground sm:text-5xl">Umuhinzi AI</h1>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-primary-foreground/90 sm:text-lg">Menya ikirere cy'aho uri, suzumisha amatungo n'ibihingwa, kandi ubone inama zihuse mu Kinyarwanda.</p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Button asChild size="lg" variant="secondary" className="font-bold"><Link to="/diagnose">Suzumisha <ArrowRight /></Link></Button>
-              <Button asChild size="lg" variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"><Link to="/weather"><CloudSun />Ikirere cy'aho ndi</Link></Button>
-            </div>
+const services = [
+  { to: "/weather", label: "Ikirere", eyebrow: "HITEGURE NEZA", title: "Ikirere cy'aho uri", description: "Iteganyagihe ry'iminsi 7 n'inama zijyanye n'ibikorwa byawe by'ubuhinzi.", icon: CloudSun, tone: "bg-sky-50 text-sky-700" },
+  { to: "/diagnose", label: "Isuzuma", eyebrow: "KUMENYA VUBA", title: "Suzumisha AI", description: "Fata ifoto y'igihingwa cyangwa itungo, ubone ibisobanuro n'intambwe wakurikiza.", icon: Stethoscope, tone: "bg-emerald-50 text-emerald-700" },
+  { to: "/chat", label: "Umujyanama", eyebrow: "IKIGANIRO MU KINYARWANDA", title: "Baza Umujyanama AI", description: "Baza ku mbuto, indwara, ifumbire, amatungo n'ibindi bikenerwa mu murima.", icon: MessageCircle, tone: "bg-amber-50 text-amber-700" },
+  { to: "/marketplace", label: "Isoko", eyebrow: "HUZA ABAGUZI N'ABAGURISHA", title: "Isoko ry'abahinzi", description: "Menyesha umusaruro wawe cyangwa ushake ibicuruzwa biboneka hafi yawe.", icon: Store, tone: "bg-lime-50 text-lime-800" },
+];
+
+const Index = () => (
+  <div className="min-h-screen bg-background">
+    <AppNav />
+    <main className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <section aria-label="Umuhinzi AI" className="relative isolate mt-5 min-h-[510px] overflow-hidden rounded-[2rem] bg-[#123b28] shadow-xl sm:mt-8 lg:min-h-[570px]">
+        <img src={heroFarmer} alt="Umuhinzi mu murima w'amaterasi mu Rwanda" width={1600} height={1200} fetchPriority="high" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#0b2b1d]/95 via-[#0b2b1d]/75 to-[#0b2b1d]/15" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#0b2b1d]/55 via-transparent to-transparent" />
+        <div className="flex min-h-[510px] max-w-3xl flex-col justify-center px-6 py-14 sm:px-12 lg:min-h-[570px] lg:px-16">
+          <span className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold tracking-[0.16em] text-white backdrop-blur-sm"><Sprout className="h-4 w-4 text-lime-300" /> IKORANABUHANGA RY'UBUHINZI MU RWANDA</span>
+          <h1 className="font-heading text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-7xl">Ubuhinzi bugezweho,<br /><span className="text-lime-300">butangirira hano.</span></h1>
+          <p className="mt-6 max-w-xl text-base leading-7 text-white/85 sm:text-lg">Umuhinzi AI ihuza ubumenyi bw'ubuhinzi n'ikoranabuhanga, igufasha gufata ibyemezo byiza mu Kinyarwanda.</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Button asChild size="lg" className="rounded-full bg-lime-300 px-6 font-bold text-[#123b28] shadow-lg hover:bg-lime-200"><Link to="/diagnose">Tangira isuzuma <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
+            <Button asChild size="lg" variant="outline" className="rounded-full border-white/40 bg-white/10 px-6 font-semibold text-white backdrop-blur-sm hover:bg-white/20 hover:text-white"><Link to="/chat"><MessageCircle className="mr-1 h-4 w-4" /> Baza AI</Link></Button>
           </div>
-        </section>
-        <div className="mb-5 flex items-center justify-between"><h2 className="text-xl font-bold sm:text-2xl">Serivisi zacu</h2><span className="text-sm text-muted-foreground">Mu Kinyarwanda</span></div>
-        <section aria-label="Serivisi za Umuhinzi AI" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Link to="/weather" className="group flex min-h-64 flex-col justify-between rounded-lg border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md motion-reduce:transition-none md:p-7">
-            <div className="flex items-start justify-between">
-              <span className="flex h-14 w-14 items-center justify-center rounded-lg bg-background text-accent"><CloudSun className="h-8 w-8" /></span>
-              <span className="flex items-center gap-1 text-xs font-bold uppercase text-primary"><MapPin className="h-4 w-4" /> Aho uri</span>
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-foreground">Ikirere</h2>
-              <p className="mt-2 text-sm text-muted-foreground">Reba iteganyagihe n'inama z'iminsi 7 zishingiye aho uri.</p>
-            </div>
-          </Link>
-
-          <Link to="/diagnose" className="group relative min-h-64 overflow-hidden rounded-lg bg-primary shadow-sm">
-            <img src={cattleCare} alt="Umworozi asuzuma inka mu rwuri" width={1200} height={912} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 motion-reduce:transition-none group-hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/30 to-transparent" />
-            <div className="relative flex h-full min-h-64 flex-col justify-between p-6 text-primary-foreground">
-              <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-background/90 text-primary"><Stethoscope className="h-6 w-6" /></span>
-              <div><h2 className="text-2xl font-bold">Gusuzuma</h2><p className="mt-1 text-sm text-primary-foreground/90">Fata ifoto cyangwa ijwi ry'itungo, ubone inama yihuse.</p></div>
-            </div>
-          </Link>
-
-          <Link to="/chat" className="flex min-h-64 flex-col gap-5 rounded-lg border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md motion-reduce:transition-none md:p-7">
-            <div className="flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-primary-foreground"><MessageCircle className="h-5 w-5" /></span><h2 className="text-xl font-bold">AI Chat</h2></div>
-            <p className="flex-1 rounded-lg bg-background p-4 text-sm text-muted-foreground">Baza ikibazo kijyanye n'ifumbire, imbuto cyangwa amatungo...</p>
-            <span className="flex items-center justify-between text-sm font-bold text-primary">Tangira ikiganiro <ArrowRight className="h-4 w-4" /></span>
-          </Link>
-
-          <Link to="/marketplace" className="group relative min-h-64 overflow-hidden rounded-lg border border-border bg-card shadow-sm">
-            <img src={farmMarket} alt="Umusaruro w'ibirayi, ibishyimbo n'ibigori ku isoko" width={1200} height={912} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 motion-reduce:transition-none group-hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/35 to-transparent" />
-            <div className="relative flex h-full min-h-64 flex-col justify-end p-6 text-background">
-              <div className="flex items-end justify-between gap-4"><div><h2 className="text-2xl font-bold">Isoko</h2><p className="mt-1 text-sm text-background/90">Gurisha cyangwa ugure umusaruro hafi yawe.</p></div><Store className="h-7 w-7 shrink-0 text-secondary" /></div>
-            </div>
-          </Link>
-        </section>
-        <div className="mt-6"><AdBanner /></div>
-      </main>
-
-      <footer className="border-t border-border">
-        <div className="mx-auto grid max-w-5xl gap-8 px-4 py-10 md:grid-cols-2">
-          <div>
-            <h3 className="text-lg font-bold text-foreground">Ibyerekeye Umuhinzi AI</h3>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Umuhinzi AI ni urubuga rukorwa mu Rwanda rufasha abahinzi n'aborozi gukoresha ikoranabuhanga mu buzima bwabo bwa minsi yose. Ureba ikirere cy'aho uri, usuzumisha amatungo n'ibihingwa birwaye ukoresheje ifoto cyangwa ijwi, ubone inama zihuse mu Kinyarwanda, kandi uhuzwe n'abandi bahinzi ku isoko — byose bikorwa na telefone ntoya.
-            </p>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Uru rubuga rwaturutse ku gitekerezo cya <span className="font-bold text-foreground">MIGAMBI Innocent</span>, umunyeshuri w'ikoranabuhanga (Level 4, Software Development), agamije kugeza ikoranabuhanga ku bahinzi n’aborozi.
-            </p>
-          </div>
-          <div className="md:text-right">
-            <h3 className="text-lg font-bold text-foreground">Serivisi zacu</h3>
-            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/weather" className="hover:text-primary">Ikirere n'iteganyagihe</Link></li>
-              <li><Link to="/diagnose" className="hover:text-primary">Gusuzuma amatungo n'ibihingwa</Link></li>
-              <li><Link to="/chat" className="hover:text-primary">AI Chat — inama zihuse</Link></li>
-              <li><Link to="/marketplace" className="hover:text-primary">Isoko ry'abahinzi n'aborozi</Link></li>
-            </ul>
+          <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-white/80">
+            <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-lime-300" /> Yubakiwe ku bahinzi</span>
+            <span className="inline-flex items-center gap-2"><MapPin className="h-4 w-4 text-lime-300" /> Yagenewe u Rwanda</span>
+            <span className="inline-flex items-center gap-2"><Sparkles className="h-4 w-4 text-lime-300" /> Ikoresha AI</span>
           </div>
         </div>
-        <div className="border-t border-border py-6 text-center text-sm text-muted-foreground">
-          © 2026 Umuhinzi AI — MIGAMBI Innocent
+      </section>
+
+      <section className="py-14 sm:py-20" aria-labelledby="services-heading">
+        <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div><p className="text-xs font-bold tracking-[0.18em] text-primary">IBIKENEWE MU MURIMA WAWE</p><h2 id="services-heading" className="mt-2 font-heading text-3xl font-bold tracking-tight sm:text-4xl">Ibikoresho bigufasha gutera imbere</h2></div>
+          <p className="max-w-md text-sm leading-6 text-muted-foreground">Serivisi zifasha mu gufata ibyemezo, kwita ku musaruro no guhuza abahinzi n'amasoko.</p>
         </div>
-      </footer>
-    </div>
-  );
-};
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {services.map(({ to, eyebrow, title, description, icon: Icon, tone }) => (
+            <Link key={to} to={to} className="group rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              <div className="flex items-center justify-between"><span className={`flex h-12 w-12 items-center justify-center rounded-2xl ${tone}`}><Icon className="h-6 w-6" /></span><ArrowRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-primary" /></div>
+              <p className="mt-7 text-[10px] font-bold tracking-[0.15em] text-primary">{eyebrow}</p>
+              <h3 className="mt-2 font-heading text-xl font-bold">{title}</h3>
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">{description}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="grid gap-5 lg:grid-cols-2" aria-label="Umuhinzi n'isoko">
+        <Link to="/diagnose" className="group relative min-h-[340px] overflow-hidden rounded-[1.75rem] bg-primary shadow-md">
+          <img src={cattleCare} alt="Umworozi yita ku nka mu rwuri" width={1200} height={912} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#082719]/95 via-[#082719]/20 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 p-7 text-white sm:p-9"><div><span className="rounded-full bg-white/15 px-3 py-1 text-xs font-bold backdrop-blur">UBUZIMA BW'AMATUNGO</span><h2 className="mt-4 font-heading text-2xl font-bold sm:text-3xl">Menya kare. Fata ingamba.</h2><p className="mt-2 max-w-md text-sm leading-6 text-white/80">Isuzuma ryihuse rifasha kumenya ibimenyetso no kugana inzobere igihe bikenewe.</p></div><ArrowRight className="mb-1 h-6 w-6 shrink-0 transition-transform group-hover:translate-x-1" /></div>
+        </Link>
+        <Link to="/marketplace" className="group relative min-h-[340px] overflow-hidden rounded-[1.75rem] bg-foreground shadow-md">
+          <img src={farmMarket} alt="Umusaruro w'ibirayi, ibishyimbo n'ibigori ku isoko" width={1200} height={912} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#111b13]/95 via-[#111b13]/15 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 p-7 text-white sm:p-9"><div><span className="rounded-full bg-white/15 px-3 py-1 text-xs font-bold backdrop-blur">ISOKO RY'UBUHINZI</span><h2 className="mt-4 font-heading text-2xl font-bold sm:text-3xl">Umusaruro wawe ufite agaciro.</h2><p className="mt-2 max-w-md text-sm leading-6 text-white/80">Shaka abaguzi, reba ibicuruzwa, kandi uhuze n'abahinzi bo mu Rwanda.</p></div><ArrowRight className="mb-1 h-6 w-6 shrink-0 transition-transform group-hover:translate-x-1" /></div>
+        </Link>
+      </section>
+
+      <section className="my-14 overflow-hidden rounded-3xl border border-primary/10 bg-[#edf5e9] p-6 sm:my-20 sm:p-10">
+        <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center"><div><p className="flex items-center gap-2 text-xs font-bold tracking-[0.16em] text-primary"><Sun className="h-4 w-4" /> UBUMENYI BUKORERA ABANTU BOSE</p><h2 className="mt-3 max-w-2xl font-heading text-2xl font-bold sm:text-3xl">Ikoranabuhanga rikura rifatanyije n'ubumenyi bw'umuhinzi.</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">Ibisubizo bya AI ni ubufasha bw'ibanze, si umusimbura w'umuveterineri cyangwa umuhanga mu buhinzi. Igihe ikibazo gikomeye, ganira n'inzobere.</p></div><Button asChild size="lg" className="w-fit rounded-full px-6"><Link to="/vets">Reba abaveterineri <ArrowRight className="ml-1 h-4 w-4" /></Link></Button></div>
+      </section>
+      <div className="mb-12"><AdBanner /></div>
+    </main>
+
+    <footer className="border-t border-border bg-card">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.4fr_1fr] lg:px-8">
+        <div><Link to="/" className="inline-flex items-center gap-3 font-heading font-bold"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-secondary"><Sprout className="h-5 w-5" /></span><span>Umuhinzi AI</span></Link><p className="mt-4 max-w-xl text-sm leading-6 text-muted-foreground">Urubuga rukorwa mu Rwanda rufasha abahinzi n'aborozi kubona ubumenyi, ibikoresho n'amasoko mu Kinyarwanda. Umushinga wa Innocent MIGAMBI.</p></div>
+        <div className="md:justify-self-end"><h3 className="font-heading font-bold">Serivisi</h3><ul className="mt-4 grid grid-cols-2 gap-x-8 gap-y-3 text-sm text-muted-foreground"><li><Link to="/weather" className="hover:text-primary">Ikirere</Link></li><li><Link to="/diagnose" className="hover:text-primary">Isuzuma rya AI</Link></li><li><Link to="/chat" className="hover:text-primary">Umujyanama AI</Link></li><li><Link to="/marketplace" className="hover:text-primary">Isoko</Link></li><li><Link to="/vets" className="hover:text-primary">Abaveterineri</Link></li><li><Link to="/premium" className="hover:text-primary">Serivisi z'inyongera</Link></li></ul></div>
+      </div>
+      <div className="border-t border-border px-4 py-5 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} Umuhinzi AI · Yakozwe mu Rwanda na Innocent MIGAMBI</div>
+    </footer>
+  </div>
+);
 
 export default Index;

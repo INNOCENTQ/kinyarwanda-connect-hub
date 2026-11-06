@@ -32,7 +32,7 @@
     --input: 91 19% 79%;
     --ring: 143 50% 24%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 140 20% 15%;
     --sidebar-foreground: 45 30% 90%;
@@ -85,24 +85,16 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-
+  * { @apply border-border; }
   body {
     @apply bg-background text-foreground;
+    margin: 0;
     font-family: 'Manrope', sans-serif;
+    letter-spacing: 0;
   }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Sora', sans-serif;
-  }
-}
-
-@layer base {
+  h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; }
   html { scroll-behavior: smooth; }
-  body { margin: 0; letter-spacing: 0; }
   a, button, input, textarea { -webkit-tap-highlight-color: transparent; }
-  a:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 4px; }
+  a:focus-visible, button:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 3px; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 }
