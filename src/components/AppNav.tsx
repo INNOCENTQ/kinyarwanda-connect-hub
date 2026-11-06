@@ -3,6 +3,7 @@ import { Sprout, MessageCircle, Stethoscope, Store, LogOut, LogIn, Menu, X, Clou
 import { useAuth } from "@/hooks/useAuth";
 import { usePlan } from "@/hooks/usePlan";
 import { Button } from "@/components/ui/button";
+import ThemeToggle from "@/components/ThemeToggle";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -37,20 +38,20 @@ export default function AppNav() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3 font-bold text-foreground">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary"><Sprout className="h-5 w-5 text-secondary" /></span>
-          <span className="font-heading text-lg">Umuhinzi AI</span>
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-2 px-4 sm:px-6 lg:px-8">
+        <Link to="/" className="flex shrink-0 items-center gap-3 font-bold text-foreground">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary"><Sprout className="h-5 w-5 text-secondary" /></span>
+          <span className="font-heading text-sm leading-tight sm:text-base">Ubuhinzi <span className="text-primary">&amp;</span> Ubworozi AI</span>
         </Link>
-        <nav aria-label="Serivisi" className="hidden lg:flex items-center gap-1">
+        <nav aria-label="Serivisi" className="ml-auto hidden items-center gap-1 lg:flex">
           {links.map(l => (
-            <Link key={l.to} to={l.to} aria-current={loc.pathname === l.to ? "page" : undefined} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm ${loc.pathname === l.to ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}>
+            <Link key={l.to} to={l.to} aria-current={loc.pathname === l.to ? "page" : undefined} className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm ${loc.pathname === l.to ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}>
               <l.icon className="h-4 w-4" />{l.label}
             </Link>
           ))}
           {user ? (
             <>
-              <Link to="/settings" aria-label="Igenamiterere" className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm ${loc.pathname === "/settings" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}>
+              <Link to="/settings" aria-label="Igenamiterere" className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm ${loc.pathname === "/settings" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}>
                 <Settings className="h-4 w-4" />
               </Link>
               <Button size="sm" variant="ghost" onClick={async () => { await signOut(); nav("/"); }}><LogOut className="h-4 w-4" />Sohoka</Button>
@@ -58,25 +59,29 @@ export default function AppNav() {
           ) : (
             <Button size="sm" onClick={() => nav("/auth")}><LogIn className="h-4 w-4" />Injira</Button>
           )}
+          <ThemeToggle className="ml-1" />
         </nav>
         {user && displayName && (
-          <Link to="/settings" title={displayName} className="ml-auto mr-2 lg:ml-3 lg:mr-0 flex items-center gap-2 rounded-full bg-primary/10 pl-1 pr-3 py-1 text-sm font-semibold text-primary max-w-[160px]">
+          <Link to="/settings" title={displayName} className="ml-auto flex max-w-[150px] items-center gap-2 rounded-full bg-primary/10 py-1 pl-1 pr-3 text-sm font-semibold text-primary lg:ml-2">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">{displayName.charAt(0).toUpperCase()}</span>
             <span className="truncate">Muraho, {firstName}</span>
           </Link>
         )}
-        <Button variant="ghost" size="icon" className="lg:hidden" aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? "Funga urutonde" : "Fungura urutonde"} onClick={() => setOpen(!open)}>{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</Button>
+        <div className="ml-auto flex items-center gap-1 lg:hidden">
+          <ThemeToggle />
+          <Button variant="ghost" size="icon" aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? "Funga urutonde" : "Fungura urutonde"} onClick={() => setOpen(!open)}>{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</Button>
+        </div>
       </div>
       {open && (
-        <nav id="mobile-navigation" aria-label="Serivisi" className="lg:hidden border-t border-border bg-card px-4 py-2 space-y-1">
+        <nav id="mobile-navigation" aria-label="Serivisi" className="space-y-1 border-t border-border bg-card px-4 py-2 lg:hidden">
           {links.map(l => (
-            <Link key={l.to} to={l.to} aria-current={loc.pathname === l.to ? "page" : undefined} onClick={() => setOpen(false)} className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm ${loc.pathname === l.to ? "bg-primary/10 text-primary" : "text-foreground"}`}>
+            <Link key={l.to} to={l.to} aria-current={loc.pathname === l.to ? "page" : undefined} onClick={() => setOpen(false)} className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm ${loc.pathname === l.to ? "bg-primary/10 text-primary" : "text-foreground"}`}>
               <l.icon className="h-4 w-4" />{l.label}
             </Link>
           ))}
           {user ? (
             <>
-              <Link to="/settings" onClick={() => setOpen(false)} className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm ${loc.pathname === "/settings" ? "bg-primary/10 text-primary" : "text-foreground"}`}>
+              <Link to="/settings" onClick={() => setOpen(false)} className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm ${loc.pathname === "/settings" ? "bg-primary/10 text-primary" : "text-foreground"}`}>
                 <Settings className="h-4 w-4" />Igenamiterere
               </Link>
               <Button variant="ghost" onClick={async () => { await signOut(); setOpen(false); nav("/"); }} className="w-full justify-start"><LogOut className="h-4 w-4" />Sohoka</Button>

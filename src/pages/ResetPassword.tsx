@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Sprout, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Sprout, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function ResetPassword() {
@@ -15,7 +15,6 @@ export default function ResetPassword() {
   const [isRecovery, setIsRecovery] = useState(false);
 
   useEffect(() => {
-    // Recovery links carry type=recovery in the URL hash
     if (window.location.hash.includes("type=recovery")) setIsRecovery(true);
     const { data: sub } = supabase.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY") setIsRecovery(true);
@@ -38,17 +37,17 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md bg-card border border-border rounded-2xl p-8 space-y-6 shadow-lg">
-        <Link to="/" className="flex items-center gap-2 justify-center">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <div className="w-full max-w-md space-y-6 rounded-2xl border border-border bg-card p-8 shadow-lg">
+        <Link to="/" className="flex items-center justify-center gap-2">
           <Sprout className="h-7 w-7 text-primary" />
-          <span className="text-2xl font-bold text-foreground">Umuhinzi AI</span>
+          <span className="text-center text-xl font-bold text-foreground">Ubuhinzi &amp; Ubworozi AI</span>
         </Link>
         {isRecovery ? (
           <>
             <div>
-              <h1 className="text-2xl font-bold text-center text-foreground">Ijambo ry'ibanga rishya</h1>
-              <p className="text-sm text-muted-foreground text-center mt-1">Andika ijambo ry'ibanga rishya uzajya ukoresha</p>
+              <h1 className="text-center text-2xl font-bold text-foreground">Ijambo ry'ibanga rishya</h1>
+              <p className="mt-1 text-center text-sm text-muted-foreground">Andika ijambo ry'ibanga rishya uzajya ukoresha</p>
             </div>
             <form onSubmit={submit} className="space-y-4">
               <div><Label>Ijambo ry'ibanga rishya</Label><Input type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} /></div>
@@ -60,12 +59,10 @@ export default function ResetPassword() {
             </form>
           </>
         ) : (
-          <div className="text-center space-y-4">
+          <div className="space-y-4 text-center">
             <h1 className="text-xl font-bold text-foreground">Koresha link yohererejwe muri imeyili</h1>
-            <p className="text-sm text-muted-foreground">
-              Uru rupapuro rukora gusa iyo ukoresheje link yoherejwe muri imeyili yawe. Subira kuri paji yo kwinjira ukande "Wibagiwe ijambo ry'ibanga?".
-            </p>
-            <Button onClick={() => navigate("/auth")} className="w-full">Subira kwinjira</Button>
+            <p className="text-sm text-muted-foreground">Uru rupapuro rukora gusa iyo ukoresheje link yoherejwe muri imeyili yawe. Subira kuri paji yo kwinjira ukande "Wibagiwe ijambo ry'ibanga?".</p>
+            <Button asChild className="w-full"><Link to="/auth">Subira ku kwinjira</Link></Button>
           </div>
         )}
       </div>

@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -26,33 +27,35 @@ const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWind
 const Fallback = () => <div className="flex min-h-screen items-center justify-center bg-background"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <AuthProvider>
-          <Suspense fallback={<Fallback />}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/chat" element={<ChatPage />} />
-              <Route path="/diagnose" element={<Diagnose />} />
-              <Route path="/marketplace" element={<Marketplace />} />
-              <Route path="/chat-room/:roomId" element={<ChatRoom />} />
-              <Route path="/weather" element={<Weather />} />
-              <Route path="/premium" element={<Premium />} />
-              <Route path="/vets" element={<Vets />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} storageKey="ubuhinzi-ubworozi-theme">
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <AuthProvider>
+            <Suspense fallback={<Fallback />}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/chat" element={<ChatPage />} />
+                <Route path="/diagnose" element={<Diagnose />} />
+                <Route path="/marketplace" element={<Marketplace />} />
+                <Route path="/chat-room/:roomId" element={<ChatRoom />} />
+                <Route path="/weather" element={<Weather />} />
+                <Route path="/premium" element={<Premium />} />
+                <Route path="/vets" element={<Vets />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </AuthProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ThemeProvider>
 );
 
 export default App;

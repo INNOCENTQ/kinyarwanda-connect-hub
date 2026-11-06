@@ -81,15 +81,13 @@ export default function Auth() {
     <div className="min-h-screen bg-background px-4 py-8 sm:py-12">
       <Button asChild variant="ghost" className="mb-8"><Link to="/"><ArrowLeft />Ahabanza</Link></Button>
       <div className="mx-auto w-full max-w-md space-y-7 py-4 sm:py-10">
-        <Link to="/" className="flex items-center gap-2 justify-center">
+        <Link to="/" className="flex items-center justify-center gap-2">
           <Sprout className="h-7 w-7 text-primary" />
-          <span className="text-2xl font-bold text-foreground">Umuhinzi AI</span>
+          <span className="text-center text-xl font-bold leading-tight text-foreground">Ubuhinzi &amp; Ubworozi AI</span>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-center text-foreground">{mode === "signin" ? "Injira" : "Iyandikishe"}</h1>
-          <p className="text-sm text-muted-foreground text-center mt-1">
-            {mode === "signin" ? "Garuka muri konti yawe" : "Fungura konti nshya y'ubuntu"}
-          </p>
+          <h1 className="text-center text-2xl font-bold text-foreground">{mode === "signin" ? "Injira" : "Iyandikishe"}</h1>
+          <p className="mt-1 text-center text-sm text-muted-foreground">{mode === "signin" ? "Garuka muri konti yawe" : "Fungura konti nshya y'ubuntu"}</p>
         </div>
         <form onSubmit={submit} className="space-y-4">
           <div role="tablist" aria-label="Uburyo bwo kwinjira" className="grid grid-cols-2 gap-1 rounded-lg bg-muted p-1">
@@ -121,7 +119,7 @@ export default function Auth() {
           </Button>
         )}
         {mode === "signin" && method === "phone" && (
-          <p className="text-center text-xs text-muted-foreground">Wibagiwe ijambo ry'ibanga? Vugana n'ubuyobozi bw'Umuhinzi AI bakagufasha.</p>
+          <p className="text-center text-xs text-muted-foreground">Wibagiwe ijambo ry'ibanga? Vugana n'ubuyobozi bwa Ubuhinzi &amp; Ubworozi AI bakagufasha.</p>
         )}
         <Button variant="link" disabled={loading} onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setResetSent(false); }} className="w-full whitespace-normal">
           {mode === "signin" ? "Nta konti ufite? Iyandikishe" : "Usanzwe ufite konti? Injira"}
