@@ -8,10 +8,10 @@ import cattleCare from "@/assets/ankole-cattle-care.jpg";
 import farmMarket from "@/assets/rwanda-farm-market.jpg";
 
 const services = [
-  { to: "/weather", label: "Ikirere", eyebrow: "HITEGURE NEZA", title: "Ikirere cy'aho uri", description: "Iteganyagihe ry'iminsi 7 n'inama zijyanye n'ibikorwa byawe by'ubuhinzi n'ubworozi.", icon: CloudSun, tone: "bg-sky-50 text-sky-700" },
-  { to: "/diagnose", label: "Isuzuma", eyebrow: "KUMENYA VUBA", title: "Suzumisha AI", description: "Fata ifoto y'igihingwa cyangwa itungo, ubone ibisobanuro n'intambwe wakurikiza.", icon: Stethoscope, tone: "bg-emerald-50 text-emerald-700" },
-  { to: "/chat", label: "Umujyanama", eyebrow: "IKIGANIRO MU KINYARWANDA", title: "Baza Umujyanama AI", description: "Baza ku mbuto, indwara z'ibihingwa n'iz'amatungo, ifumbire, ubworozi n'ibindi bikenerwa mu murima.", icon: MessageCircle, tone: "bg-amber-50 text-amber-700" },
-  { to: "/marketplace", label: "Isoko", eyebrow: "HUZA ABAGUZI N'ABAGURISHA", title: "Isoko ry'abahinzi", description: "Menyesha umusaruro wawe cyangwa ushake ibicuruzwa biboneka hafi yawe.", icon: Store, tone: "bg-lime-50 text-lime-800" },
+  { to: "/weather", eyebrow: "HITEGURE NEZA", title: "Ikirere cy'aho uri", description: "Iteganyagihe ry'iminsi 7 n'inama zijyanye n'ibikorwa by'ubuhinzi n'ubworozi.", icon: CloudSun, tone: "bg-sky-50 text-sky-700" },
+  { to: "/diagnose", eyebrow: "KUMENYA VUBA", title: "Suzumisha AI", description: "Fata ifoto y'igihingwa cyangwa itungo, ubone ibisobanuro n'intambwe wakurikiza.", icon: Stethoscope, tone: "bg-emerald-50 text-emerald-700" },
+  { to: "/chat", eyebrow: "IKIGANIRO MU KINYARWANDA", title: "Baza Umujyanama AI", description: "Baza ku mbuto, indwara z'ibihingwa n'iz'amatungo, ifumbire, ubworozi n'ibindi bikenerwa mu murima.", icon: MessageCircle, tone: "bg-amber-50 text-amber-700" },
+  { to: "/marketplace", eyebrow: "HUZA ABAGUZI N'ABAGURISHA", title: "Isoko ry'abahinzi", description: "Menyesha umusaruro wawe cyangwa ushake ibicuruzwa biboneka hafi yawe.", icon: Store, tone: "bg-lime-50 text-lime-800" },
 ];
 
 const Index = () => (
@@ -19,7 +19,7 @@ const Index = () => (
     <AppNav />
     <main className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
       <section aria-label="Umuhinzi AI" className="relative isolate mt-5 min-h-[510px] overflow-hidden rounded-[2rem] bg-[#123b28] shadow-xl sm:mt-8 lg:min-h-[570px]">
-        <img src={heroFarmer} alt="Umuhinzi n'umworozi mu Rwanda" width={1600} height={1200} fetchPriority="high" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
+        <img src={heroFarmer} alt="Ubuhinzi n'ubworozi mu misozi y'u Rwanda" width={1600} height={1200} fetchPriority="high" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#0b2b1d]/95 via-[#0b2b1d]/75 to-[#0b2b1d]/15" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#0b2b1d]/55 via-transparent to-transparent" />
         <div className="flex min-h-[510px] max-w-3xl flex-col justify-center px-6 py-14 sm:px-12 lg:min-h-[570px] lg:px-16">
@@ -55,17 +55,26 @@ const Index = () => (
         </div>
       </section>
 
-      <section className="grid gap-5 lg:grid-cols-2" aria-label="Ubuhinzi n'ubworozi n'isoko">
-        <Link to="/diagnose" className="group relative min-h-[340px] overflow-hidden rounded-[1.75rem] bg-primary shadow-md">
-          <img src={cattleCare} alt="Umworozi yita ku nka mu rwuri" width={1200} height={912} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#082719]/95 via-[#082719]/20 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 p-7 text-white sm:p-9"><div><span className="rounded-full bg-white/15 px-3 py-1 text-xs font-bold backdrop-blur">UBWOROZI N'UBUZIMA BW'AMATUNGO</span><h2 className="mt-4 font-heading text-2xl font-bold sm:text-3xl">Menya kare. Fata ingamba.</h2><p className="mt-2 max-w-md text-sm leading-6 text-white/80">Isuzuma ryihuse rifasha kumenya ibimenyetso no kugana inzobere igihe bikenewe.</p></div><ArrowRight className="mb-1 h-6 w-6 shrink-0 transition-transform group-hover:translate-x-1" /></div>
-        </Link>
-        <Link to="/marketplace" className="group relative min-h-[340px] overflow-hidden rounded-[1.75rem] bg-foreground shadow-md">
-          <img src={farmMarket} alt="Umusaruro w'ibirayi, ibishyimbo n'ibigori ku isoko" width={1200} height={912} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#111b13]/95 via-[#111b13]/15 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 p-7 text-white sm:p-9"><div><span className="rounded-full bg-white/15 px-3 py-1 text-xs font-bold backdrop-blur">ISOKO RY'UBUHINZI N'UBWOROZI</span><h2 className="mt-4 font-heading text-2xl font-bold sm:text-3xl">Umusaruro wawe ufite agaciro.</h2><p className="mt-2 max-w-md text-sm leading-6 text-white/80">Shaka abaguzi, reba ibicuruzwa, kandi uhuze n'abahinzi n'aborozi bo mu Rwanda.</p></div><ArrowRight className="mb-1 h-6 w-6 shrink-0 transition-transform group-hover:translate-x-1" /></div>
-        </Link>
+      <section aria-labelledby="sectors-heading" className="py-2">
+        <div className="mb-8 max-w-2xl"><p className="text-xs font-bold tracking-[0.18em] text-primary">INKUNGA ZOMBI ZOMBI</p><h2 id="sectors-heading" className="mt-2 font-heading text-3xl font-bold tracking-tight sm:text-4xl">Dufasha ibihingwa n'amatungo</h2><p className="mt-3 text-sm leading-6 text-muted-foreground">Hitamo ibyo ukeneye: inama ku bihingwa cyangwa ubufasha ku matungo. Byombi bifite umwanya ungana kuri Umuhinzi AI.</p></div>
+        <div className="grid gap-5 lg:grid-cols-2">
+          <Link to="/diagnose" className="group relative min-h-[360px] overflow-hidden rounded-[1.75rem] bg-primary shadow-md">
+            <img src={heroFarmer} alt="Umuhinzi mu murima w'amaterasi mu Rwanda" width={1200} height={900} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#082719]/95 via-[#082719]/15 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 p-7 text-white sm:p-9"><div><span className="rounded-full bg-white/15 px-3 py-1 text-xs font-bold backdrop-blur">UBUHINZI N'IBIHINGWA</span><h3 className="mt-4 font-heading text-2xl font-bold sm:text-3xl">Ibihingwa bizima, umusaruro mwiza.</h3><p className="mt-2 max-w-md text-sm leading-6 text-white/85">Saba ubufasha ku ndwara z'ibihingwa, imbuto, ifumbire n'ibindi byo mu murima.</p></div><ArrowRight className="mb-1 h-6 w-6 shrink-0 transition-transform group-hover:translate-x-1" /></div>
+          </Link>
+          <Link to="/diagnose" className="group relative min-h-[360px] overflow-hidden rounded-[1.75rem] bg-primary shadow-md">
+            <img src={cattleCare} alt="Umworozi yita ku nka mu rwuri" width={1200} height={912} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#082719]/95 via-[#082719]/15 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 p-7 text-white sm:p-9"><div><span className="rounded-full bg-white/15 px-3 py-1 text-xs font-bold backdrop-blur">UBWOROZI N'AMATUNGO</span><h3 className="mt-4 font-heading text-2xl font-bold sm:text-3xl">Amatungo meza, ubworozi burambye.</h3><p className="mt-2 max-w-md text-sm leading-6 text-white/85">Menya ibimenyetso by'indwara, ubone inama z'ibanze, cyangwa ushake veterineri.</p></div><ArrowRight className="mb-1 h-6 w-6 shrink-0 transition-transform group-hover:translate-x-1" /></div>
+          </Link>
+        </div>
+      </section>
+
+      <section className="relative my-14 min-h-[260px] overflow-hidden rounded-[1.75rem] bg-[#1a3426] sm:my-20">
+        <img src={farmMarket} alt="Umusaruro w'abahinzi bo mu Rwanda ku isoko" width={1200} height={912} loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-45" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#102819]/95 via-[#102819]/75 to-[#102819]/35" />
+        <div className="relative flex min-h-[260px] flex-col items-start justify-center gap-6 p-7 text-white sm:flex-row sm:items-center sm:justify-between sm:p-10"><div className="max-w-2xl"><p className="text-xs font-bold tracking-[0.18em] text-lime-300">ISOKO RY'UBUHINZI N'UBWOROZI</p><h2 className="mt-3 font-heading text-2xl font-bold sm:text-3xl">Umusaruro wawe ufite agaciro.</h2><p className="mt-3 text-sm leading-6 text-white/80">Shaka abaguzi, reba ibicuruzwa, kandi uhuze n'abahinzi n'aborozi bo mu Rwanda.</p></div><Button asChild size="lg" className="shrink-0 rounded-full bg-lime-300 px-6 font-bold text-[#123b28] hover:bg-lime-200"><Link to="/marketplace">Jya ku isoko <ArrowRight className="ml-1 h-4 w-4" /></Link></Button></div>
       </section>
 
       <section className="my-14 overflow-hidden rounded-3xl border border-primary/10 bg-[#edf5e9] p-6 sm:my-20 sm:p-10">
