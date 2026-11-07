@@ -18,7 +18,7 @@ import cattleImg from "@/assets/ankole-cattle-care.jpg";
 import cropImg from "@/assets/rwanda-terraced-farmer.jpg";
 
 const DIAGNOSE_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/diagnose`;
-const FREE_LIMIT = 3;
+const FREE_LIMIT = 10;
 const MAX_AUDIO_SECONDS = 30;
 const MAX_IMAGE_MB = 15;
 
