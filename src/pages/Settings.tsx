@@ -12,6 +12,7 @@ import { User, Lock, ShieldCheck, Languages, Loader2, MapPin } from "lucide-reac
 import { toast } from "sonner";
 import { isPhoneAccount } from "@/lib/phone-auth";
 import { useQueryClient } from "@tanstack/react-query";
+import { useLang, type Lang } from "@/hooks/useLang";
 
 export default function Settings() {
   const queryClient = useQueryClient();
@@ -38,7 +39,7 @@ export default function Settings() {
   const [savingPrivacy, setSavingPrivacy] = useState(false);
 
   // Language (stored locally)
-  const [lang, setLang] = useState(localStorage.getItem("umuhinzi_lang") || "rw");
+  const { lang, setLang } = useLang();
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth");
@@ -108,8 +109,7 @@ export default function Settings() {
   };
 
   const changeLang = (v: string) => {
-    setLang(v);
-    localStorage.setItem("umuhinzi_lang", v);
+    setLang(v as Lang);
     toast.success(v === "rw" ? "Ururimi rwahinduwe: Ikinyarwanda" : "Language changed: English");
   };
 

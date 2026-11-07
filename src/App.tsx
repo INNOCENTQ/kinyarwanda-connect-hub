@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { Loader2 } from "lucide-react";
+import { LanguageProvider } from "@/hooks/useLang";
 import Index from "./pages/Index";
 
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -34,6 +35,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <AuthProvider>
+           <LanguageProvider>
             <Suspense fallback={<Fallback />}>
               <Routes>
                 <Route path="/" element={<Index />} />
@@ -51,6 +53,7 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
+           </LanguageProvider>
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
