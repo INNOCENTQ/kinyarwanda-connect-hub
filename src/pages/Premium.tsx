@@ -39,23 +39,14 @@ export default function Premium() {
             <h2 className="text-xl font-bold">Ubuntu</h2>
             <p className="mt-1 text-3xl font-bold">0 RWF</p>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              {[
-                "Ikirere cy'aho uri",
-                "AI Chat",
-                "Gusuzuma 10 buri kwezi",
-                "Isoko",
-              ].map(t => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-primary" />{t}</li>)}
+              {["Ikirere cy'aho uri", "AI Chat", "Gusuzuma 10 buri kwezi", "Isoko"].map(t => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-primary" />{t}</li>)}
             </ul>
           </div>
           <div className="rounded-lg border-2 border-primary bg-card p-6">
             <h2 className="flex items-center gap-2 text-xl font-bold"><Crown className="h-5 w-5 text-secondary" />Premium</h2>
             <p className="mt-1 text-3xl font-bold">{PRICES.premium.toLocaleString()} RWF<span className="text-sm font-normal text-muted-foreground"> / ukwezi</span></p>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              {[
-                "Byose biri mu buntu",
-                "Gusuzuma nta mupaka",
-                "Ubufasha bwihuse",
-              ].map(t => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-primary" />{t}</li>)}
+              {["Byose biri mu buntu", "Gusuzuma nta mupaka", "Ubufasha bwihuse"].map(t => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-primary" />{t}</li>)}
             </ul>
             {premium ? <p className="mt-5 font-bold text-primary">Uri Premium kugeza {new Date(activeUntil!).toLocaleDateString("rw-RW")}</p>
               : <Button className="mt-5 w-full" onClick={need(() => setPayOpen(true))}>Fata Premium</Button>}
@@ -66,7 +57,7 @@ export default function Premium() {
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <div className="rounded-lg border border-border bg-card p-5">
             <Star className="h-6 w-6 text-secondary" />
-            <h3 className="mt-2 font-bold">Amabasa y'igicuruzwa</h3>
+            <h3 className="mt-2 font-bold">Kwamamaza igicuruzwa</h3>
             <p className="mt-1 text-sm text-muted-foreground">Igicuruzwa cyawe kiza imbere ku Isoko iminsi 7 — {PRICES.featured.toLocaleString()} RWF.</p>
             <Button asChild variant="outline" className="mt-4 w-full"><Link to="/marketplace">Jya ku Isoko</Link></Button>
           </div>
@@ -101,7 +92,7 @@ export default function Premium() {
   );
 }
 
-export const KIND: Record<string, string> = { premium: "Premium", featured: "Amabasa y'igicuruzwa", ad: "Itangazo", vet: "Veterineri" };
+export const KIND: Record<string, string> = { premium: "Premium", featured: "Kwamamaza igicuruzwa", ad: "Itangazo", vet: "Veterineri" };
 export const STATUS: Record<string, string> = { pending: "Birategereje", approved: "Byemejwe", rejected: "Byanzwe" };
 
 function AdDialog({ open, onOpenChange, onCreated }: { open: boolean; onOpenChange: (o: boolean) => void; onCreated: (id: string) => void }) {

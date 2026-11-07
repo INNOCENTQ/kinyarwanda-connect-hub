@@ -1,7 +1,7 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
-const FREE_LIMIT = 3;
+const FREE_LIMIT = 10;
 
 const SYSTEM_LIVESTOCK = `Uri inzobere mu buvuzi bw'amatungo mu Rwanda. Subiza BIGUFI cyane mu Kinyarwanda (max 80 amagambo).
 
@@ -36,7 +36,7 @@ Deno.serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) throw new Error('LOVABLE_API_KEY missing');
 
-    // Free plan: 3 diagnoses per month; premium unlimited
+    // Free plan: 10 diagnoses per month; premium unlimited
     const json = (b: unknown, s: number) => new Response(JSON.stringify(b), { status: s, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     const authHeader = req.headers.get('Authorization') || '';
     const sb = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_ANON_KEY')!, { global: { headers: { Authorization: authHeader } } });
