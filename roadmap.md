@@ -13,3 +13,4 @@ Not exercised: delivery of password-reset emails, AI responses and payment appro
 # AI chat + market roles
 - [x] AI chat: better Kinyarwanda answers, clear errors, keep conversation, new-chat/stop buttons, input always visible.
 - [x] Seller and customer sections on the market (my listings / my conversations).
+- [x] Language switch (Kinyarwanda/English only)
