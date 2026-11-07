@@ -3,9 +3,11 @@ import FarmingChat from "@/components/FarmingChat";
 
 export default function ChatPage() {
   return (
-    <div className="h-[100dvh] flex flex-col bg-background overflow-hidden">
+    <div className="flex h-[100dvh] flex-col overflow-hidden bg-background">
       <AppNav />
-      <div className="flex-1 min-h-0 flex flex-col"><FarmingChat /></div>
+      <main className="flex min-h-0 flex-1 flex-col" aria-label="AI farming and livestock assistant">
+        <FarmingChat />
+      </main>
     </div>
   );
 }
