@@ -39,7 +39,7 @@ export default function Premium() {
             <h2 className="text-xl font-bold">Ubuntu</h2>
             <p className="mt-1 text-3xl font-bold">0 RWF</p>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              {["Ikirere cy'aho uri", "AI Chat", "Gusuzuma 3 buri kwezi", "Isoko"].map(t => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-primary" />{t}</li>)}
+              {["Ikirere cy'aho uri", "AI Chat", "Gusuzuma 10 buri kwezi", "Isoko"].map(t => <li key={t} className="flex gap-2"><Check className="h-4 w-4 text-primary" />{t}</li>)}
             </ul>
           </div>
           <div className="rounded-lg border-2 border-primary bg-card p-6">
