@@ -1,7 +1,7 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
-const FREE_LIMIT = 3;
+const FREE_LIMIT = 10;
 
 const SYSTEM_LIVESTOCK = `Uri inzobere mu buvuzi bw'amatungo mu Rwanda. Subiza BIGUFI cyane mu Kinyarwanda (max 80 amagambo).
 
