@@ -1,6 +1,6 @@
 # Presentation slides
 
-This folder contains a six-slide illustrated overview of **Ubuhinzi & Ubworozi AI**, the Rwanda-focused digital assistant for crop farmers and livestock keepers.
+This folder contains a six-slide illustrated overview of **Umuhinzi AI**, the Rwanda-focused digital assistant for crop farmers and livestock keepers.
 
 ## View the presentation
 
