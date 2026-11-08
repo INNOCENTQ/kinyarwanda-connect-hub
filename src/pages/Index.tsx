@@ -1,7 +1,8 @@
-import { ArrowRight, CloudSun, MapPin, MessageCircle, ShieldCheck, Sparkles, Sprout, Stethoscope, Store, Sun } from "lucide-react";
+import { ArrowRight, CloudSun, MessageCircle, Sprout, Stethoscope, Store, Sun } from "lucide-react";
 import { Link } from "react-router-dom";
 import AppNav from "@/components/AppNav";
 import AdBanner from "@/components/AdBanner";
+import HeroCarousel from "@/components/HeroCarousel";
 import { Button } from "@/components/ui/button";
 import heroFarmer from "@/assets/rwanda-terraced-farmer.jpg";
 import cattleCare from "@/assets/ankole-cattle-care.jpg";
@@ -18,25 +19,7 @@ const Index = () => (
   <div className="min-h-screen bg-background">
     <AppNav />
     <main className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
-      <section aria-label="Ubuhinzi n'Ubworozi AI" className="relative isolate mt-5 min-h-[510px] overflow-hidden rounded-[2rem] bg-[#123b28] shadow-xl sm:mt-8 lg:min-h-[570px]">
-        <img src={heroFarmer} alt="Ubuhinzi n'ubworozi mu misozi y'u Rwanda" width={1600} height={1200} fetchPriority="high" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#0b2b1d]/95 via-[#0b2b1d]/75 to-[#0b2b1d]/15" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#0b2b1d]/55 via-transparent to-transparent" />
-        <div className="flex min-h-[510px] max-w-3xl flex-col justify-center px-6 py-14 sm:px-12 lg:min-h-[570px] lg:px-16">
-          <span className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold tracking-[0.16em] text-white backdrop-blur-sm"><Sprout className="h-4 w-4 text-lime-300" /> IKORANABUHANGA RY'UBUHINZI N'UBWOROZI MU RWANDA</span>
-          <h1 className="font-heading text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-7xl">Ubuhinzi n'ubworozi<br /><span className="text-lime-300">bw'ejo hazaza.</span></h1>
-          <p className="mt-6 max-w-xl text-base leading-7 text-white/85 sm:text-lg">Umuhinzi AI ihuza ubumenyi n'ikoranabuhanga, igufasha kwita ku bihingwa n'amatungo no gufata ibyemezo byiza mu Kinyarwanda.</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg" className="rounded-full bg-lime-300 px-6 font-bold text-[#123b28] shadow-lg hover:bg-lime-200"><Link to="/diagnose">Tangira isuzuma <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
-            <Button asChild size="lg" variant="outline" className="rounded-full border-white/40 bg-white/10 px-6 font-semibold text-white backdrop-blur-sm hover:bg-white/20 hover:text-white"><Link to="/chat"><MessageCircle className="mr-1 h-4 w-4" /> Baza AI</Link></Button>
-          </div>
-          <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-white/80">
-            <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-lime-300" /> Yubakiwe ku bahinzi n'aborozi</span>
-            <span className="inline-flex items-center gap-2"><MapPin className="h-4 w-4 text-lime-300" /> Yagenewe u Rwanda</span>
-            <span className="inline-flex items-center gap-2"><Sparkles className="h-4 w-4 text-lime-300" /> Ikoresha AI</span>
-          </div>
-        </div>
-      </section>
+      <HeroCarousel />
 
       <section className="py-14 sm:py-20" aria-labelledby="services-heading">
         <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
