@@ -14,3 +14,9 @@ Not exercised: delivery of password-reset emails, AI responses and payment appro
 - [x] AI chat: better Kinyarwanda answers, clear errors, keep conversation, new-chat/stop buttons, input always visible.
 - [x] Seller and customer sections on the market (my listings / my conversations).
 - [x] Language switch (Kinyarwanda/English only)
+
+# Staff dashboards
+- [ ] Expand admin coverage: users, marketplace, advertisements, subscriptions and veterinary requests.
+- [ ] Add dedicated administrator and veterinarian sign-in with verified access.
+- [ ] Link veterinary accounts and manage assigned consultations securely.
+- [ ] Test permissions and verify staff flows on desktop and phone.
