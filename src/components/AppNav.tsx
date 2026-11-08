@@ -44,7 +44,7 @@ export default function AppNav() {
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-2 px-4 sm:px-6 lg:px-8">
         <Link to="/" className="flex shrink-0 items-center gap-3 font-bold text-foreground">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary"><Sprout className="h-5 w-5 text-secondary" /></span>
-          <span className="font-heading text-sm leading-tight sm:text-base">Ubuhinzi <span className="text-primary">&amp;</span> Ubworozi AI</span>
+          <span className="font-heading text-sm leading-tight sm:text-base">Umuhinzi <span className="text-primary">AI</span></span>
         </Link>
         <nav aria-label="Serivisi" className="ml-auto hidden items-center gap-1 lg:flex">
           {links.map(l => (

@@ -83,7 +83,7 @@ export default function Auth() {
       <div className="mx-auto w-full max-w-md space-y-7 py-4 sm:py-10">
         <Link to="/" className="flex items-center justify-center gap-2">
           <Sprout className="h-7 w-7 text-primary" />
-          <span className="text-center text-xl font-bold leading-tight text-foreground">Ubuhinzi &amp; Ubworozi AI</span>
+          <span className="text-center text-xl font-bold leading-tight text-foreground">Umuhinzi AI</span>
         </Link>
         <div>
           <h1 className="text-center text-2xl font-bold text-foreground">{mode === "signin" ? "Injira" : "Iyandikishe"}</h1>
@@ -119,7 +119,7 @@ export default function Auth() {
           </Button>
         )}
         {mode === "signin" && method === "phone" && (
-          <p className="text-center text-xs text-muted-foreground">Wibagiwe ijambo ry'ibanga? Vugana n'ubuyobozi bwa Ubuhinzi &amp; Ubworozi AI bakagufasha.</p>
+          <p className="text-center text-xs text-muted-foreground">Wibagiwe ijambo ry'ibanga? Vugana n'ubuyobozi bwa Umuhinzi AI bakagufasha.</p>
         )}
         <Button variant="link" disabled={loading} onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setResetSent(false); }} className="w-full whitespace-normal">
           {mode === "signin" ? "Nta konti ufite? Iyandikishe" : "Usanzwe ufite konti? Injira"}

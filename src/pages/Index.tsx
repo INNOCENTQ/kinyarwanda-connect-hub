@@ -25,7 +25,7 @@ const Index = () => (
         <div className="flex min-h-[510px] max-w-3xl flex-col justify-center px-6 py-14 sm:px-12 lg:min-h-[570px] lg:px-16">
           <span className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold tracking-[0.16em] text-white backdrop-blur-sm"><Sprout className="h-4 w-4 text-lime-300" /> IKORANABUHANGA RY'UBUHINZI N'UBWOROZI MU RWANDA</span>
           <h1 className="font-heading text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-7xl">Ubuhinzi n'ubworozi<br /><span className="text-lime-300">bw'ejo hazaza.</span></h1>
-          <p className="mt-6 max-w-xl text-base leading-7 text-white/85 sm:text-lg">Ubuhinzi &amp; Ubworozi AI ihuza ubumenyi n'ikoranabuhanga, igufasha kwita ku bihingwa n'amatungo no gufata ibyemezo byiza mu Kinyarwanda.</p>
+          <p className="mt-6 max-w-xl text-base leading-7 text-white/85 sm:text-lg">Umuhinzi AI ihuza ubumenyi n'ikoranabuhanga, igufasha kwita ku bihingwa n'amatungo no gufata ibyemezo byiza mu Kinyarwanda.</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg" className="rounded-full bg-lime-300 px-6 font-bold text-[#123b28] shadow-lg hover:bg-lime-200"><Link to="/diagnose">Tangira isuzuma <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
             <Button asChild size="lg" variant="outline" className="rounded-full border-white/40 bg-white/10 px-6 font-semibold text-white backdrop-blur-sm hover:bg-white/20 hover:text-white"><Link to="/chat"><MessageCircle className="mr-1 h-4 w-4" /> Baza AI</Link></Button>
@@ -56,7 +56,7 @@ const Index = () => (
       </section>
 
       <section aria-labelledby="sectors-heading" className="py-2">
-        <div className="mb-8 max-w-2xl"><p className="text-xs font-bold tracking-[0.18em] text-primary">INKUNGA ZOMBI ZOMBI</p><h2 id="sectors-heading" className="mt-2 font-heading text-3xl font-bold tracking-tight sm:text-4xl">Dufasha ibihingwa n'amatungo</h2><p className="mt-3 text-sm leading-6 text-muted-foreground">Hitamo ibyo ukeneye: inama ku bihingwa cyangwa ubufasha ku matungo. Byombi bifite umwanya ungana kuri Ubuhinzi &amp; Ubworozi AI.</p></div>
+        <div className="mb-8 max-w-2xl"><p className="text-xs font-bold tracking-[0.18em] text-primary">INKUNGA ZOMBI ZOMBI</p><h2 id="sectors-heading" className="mt-2 font-heading text-3xl font-bold tracking-tight sm:text-4xl">Dufasha ibihingwa n'amatungo</h2><p className="mt-3 text-sm leading-6 text-muted-foreground">Hitamo ibyo ukeneye: inama ku bihingwa cyangwa ubufasha ku matungo. Byombi bifite umwanya ungana kuri Umuhinzi AI.</p></div>
         <div className="grid gap-5 lg:grid-cols-2">
           <Link to="/diagnose" className="group relative min-h-[360px] overflow-hidden rounded-[1.75rem] bg-primary shadow-md">
             <img src={heroFarmer} alt="Umuhinzi mu murima w'amaterasi mu Rwanda" width={1200} height={900} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none" />
@@ -85,10 +85,10 @@ const Index = () => (
 
     <footer className="border-t border-border bg-card">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.4fr_1fr] lg:px-8">
-        <div><Link to="/" className="inline-flex items-center gap-3 font-heading font-bold"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-secondary"><Sprout className="h-5 w-5" /></span><span>Ubuhinzi &amp; Ubworozi AI</span></Link><p className="mt-4 max-w-xl text-sm leading-6 text-muted-foreground">Urubuga rukorwa mu Rwanda rufasha abahinzi n'aborozi kubona ubumenyi, ibikoresho n'amasoko mu Kinyarwanda. Umushinga wa Innocent MIGAMBI.</p></div>
+        <div><Link to="/" className="inline-flex items-center gap-3 font-heading font-bold"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-secondary"><Sprout className="h-5 w-5" /></span><span>Umuhinzi AI</span></Link><p className="mt-4 max-w-xl text-sm leading-6 text-muted-foreground">Urubuga rukorwa mu Rwanda rufasha abahinzi n'aborozi kubona ubumenyi, ibikoresho n'amasoko mu Kinyarwanda. Umushinga wa Innocent MIGAMBI.</p></div>
         <div className="md:justify-self-end"><h3 className="font-heading font-bold">Serivisi</h3><ul className="mt-4 grid grid-cols-2 gap-x-8 gap-y-3 text-sm text-muted-foreground"><li><Link to="/weather" className="hover:text-primary">Ikirere</Link></li><li><Link to="/diagnose" className="hover:text-primary">Isuzuma rya AI</Link></li><li><Link to="/chat" className="hover:text-primary">Umujyanama AI</Link></li><li><Link to="/marketplace" className="hover:text-primary">Isoko</Link></li><li><Link to="/vets" className="hover:text-primary">Abaveterineri</Link></li><li><Link to="/premium" className="hover:text-primary">Serivisi z'inyongera</Link></li></ul></div>
       </div>
-      <div className="border-t border-border px-4 py-5 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} Ubuhinzi &amp; Ubworozi AI · Yakozwe mu Rwanda na Innocent MIGAMBI</div>
+      <div className="border-t border-border px-4 py-5 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} Umuhinzi AI · Yakozwe mu Rwanda na Innocent MIGAMBI</div>
     </footer>
   </div>
 );
