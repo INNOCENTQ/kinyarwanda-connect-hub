@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#102b24">
-  <title>Ubuhinzi &amp; Ubworozi AI — A healthier harvest, a stronger herd</title>
+  <title>Umuhinzi AI — A healthier harvest, a stronger herd</title>
   <style>
     :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#091611;color:#f5f2e8}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;grid-template-rows:auto 1fr auto;background:radial-gradient(ellipse at 50% 30%,#18372a 0,#091611 70%)}header,footer{width:min(100%,1600px);margin:auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;color:#b9cbbd;font-size:14px}header strong{color:#f5f2e8;letter-spacing:.02em}.stage{position:relative;width:min(calc(100vw - 32px),calc((100vh - 144px)*16/9),1440px);aspect-ratio:16/9;margin:auto;box-shadow:0 24px 100px #0008;border:1px solid #ffffff20;border-radius:12px;overflow:hidden;background:#102b24}.stage img{display:block;width:100%;height:100%;object-fit:contain}.controls{display:flex;align-items:center;gap:12px}button{font:inherit;color:#f5f2e8;background:#18372a;border:1px solid #ffffff30;border-radius:999px;padding:8px 14px;cursor:pointer}button:hover,button:focus-visible{background:#2c6540;outline:2px solid #d5ef83;outline-offset:2px}.counter{font-variant-numeric:tabular-nums;min-width:52px;text-align:center}.progress{height:3px;background:#ffffff20;position:absolute;bottom:0;left:0;right:0}.progress span{height:100%;display:block;background:#d5ef83;transition:width .25s ease}footer{justify-content:center;text-align:center;color:#8da394} @media(max-width:600px){header,footer{padding:10px 14px;font-size:12px}.stage{width:calc(100vw - 16px);border-radius:8px}.controls{gap:6px}button{padding:7px 10px}}
   </style>
 </head>
 <body>
-  <header><strong>UBUHINZI &amp; UBWOROZI AI</strong><span>Practical support for Rwanda’s farmers and livestock keepers</span></header>
+  <header><strong>UMUHINZI AI</strong><span>Practical support for Rwanda’s farmers and livestock keepers</span></header>
   <main class="stage" aria-label="Presentation slides">
     <img id="slide" src="01-mission.svg" alt="Slide 1: A healthier harvest, a stronger herd">
     <div class="progress" aria-hidden="true"><span id="progress"></span></div>
@@ -19,7 +19,7 @@
   <script>
     const slides=[['01-mission.svg','A healthier harvest, a stronger herd'],['02-crops.svg','Better decisions for every growing season'],['03-livestock.svg','Healthier animals, stronger livelihoods'],['04-weather.svg','Know the weather. Plan with confidence.'],['05-market.svg','Connect local harvests to opportunity'],['06-together.svg','One trusted assistant, built around you']];
     let current=0;const image=document.querySelector('#slide'),counter=document.querySelector('#counter'),progress=document.querySelector('#progress');
-    function show(n){current=(n+slides.length)%slides.length;image.src=slides[current][0];image.alt=`Slide ${current+1}: ${slides[current][1]}`;counter.textContent=`${current+1} / ${slides.length}`;progress.style.width=`${(current+1)/slides.length*100}%`;document.title=`${slides[current][1]} — Ubuhinzi & Ubworozi AI`}
+    function show(n){current=(n+slides.length)%slides.length;image.src=slides[current][0];image.alt=`Slide ${current+1}: ${slides[current][1]}`;counter.textContent=`${current+1} / ${slides.length}`;progress.style.width=`${(current+1)/slides.length*100}%`;document.title=`${slides[current][1]} — Umuhinzi AI`}
     document.querySelector('#prev').addEventListener('click',()=>show(current-1));document.querySelector('#next').addEventListener('click',()=>show(current+1));document.querySelector('#full').addEventListener('click',()=>document.fullscreenElement?document.exitFullscreen():document.querySelector('.stage').requestFullscreen?.());
     document.addEventListener('keydown',e=>{if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();show(current+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(current-1)}if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1)});
     let startX=0;document.querySelector('.stage').addEventListener('touchstart',e=>{startX=e.changedTouches[0].screenX},{passive:true});document.querySelector('.stage').addEventListener('touchend',e=>{const delta=e.changedTouches[0].screenX-startX;if(Math.abs(delta)>50)show(current+(delta<0?1:-1))},{passive:true});

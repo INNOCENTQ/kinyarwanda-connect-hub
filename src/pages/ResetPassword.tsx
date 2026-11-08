@@ -41,7 +41,7 @@ export default function ResetPassword() {
       <div className="w-full max-w-md space-y-6 rounded-2xl border border-border bg-card p-8 shadow-lg">
         <Link to="/" className="flex items-center justify-center gap-2">
           <Sprout className="h-7 w-7 text-primary" />
-          <span className="text-center text-xl font-bold text-foreground">Ubuhinzi &amp; Ubworozi AI</span>
+          <span className="text-center text-xl font-bold text-foreground">Umuhinzi AI</span>
         </Link>
         {isRecovery ? (
           <>

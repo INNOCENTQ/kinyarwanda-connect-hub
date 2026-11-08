@@ -1,6 +1,6 @@
-# Ubuhinzi & Ubworozi AI
+# Umuhinzi AI
 
-Ubuhinzi & Ubworozi AI is a Rwanda-focused digital assistant for crop farmers and livestock keepers. It brings practical agriculture guidance, livestock support, local weather information, AI-assisted diagnosis, veterinary consultation, and a farmer marketplace together in Kinyarwanda.
+Umuhinzi AI is a Rwanda-focused digital assistant for crop farmers and livestock keepers. It brings practical agriculture guidance, livestock support, local weather information, AI-assisted diagnosis, veterinary consultation, and a farmer marketplace together in Kinyarwanda.
 
 ## Technology
 
