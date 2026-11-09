@@ -14,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { summarizePayments, type Payment } from "@/lib/admin-summary";
 import { toast } from "sonner";
 import { KIND, STATUS } from "./Premium";
+import { UsersPanel, ListingsPanel, AdsPanel, vetAction } from "@/components/AdminManage";
 
 type Vet = { id: string; name: string; phone: string | null; district: string | null; specialty: string | null; fee: number; active: boolean };
 const money = (amount: number) => `${amount.toLocaleString()} RWF`;
@@ -44,7 +45,7 @@ export default function Admin() {
       return { payments, vets: result.data as Vet[] };
     },
   });
-  useEffect(() => { if (!loading && !user) nav("/auth"); }, [loading, user, nav]);
+  useEffect(() => { if (!loading && !user) nav("/admin/login"); }, [loading, user, nav]);
   const review = async (id: string, approve: boolean) => {
     setBusy(id);
     try {
@@ -90,7 +91,7 @@ export default function Admin() {
         ].map(stat => <div key={stat.label} className="rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"><div className="flex items-center justify-between gap-2"><p className="text-sm text-muted-foreground">{stat.label}</p><span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${stat.tone}`}><stat.icon className="h-5 w-5" /></span></div><p className="mt-3 font-heading text-2xl font-bold break-words">{isLoading ? "—" : stat.value}</p></div>)}
       </div>
       <Tabs defaultValue="payments">
-        <TabsList><TabsTrigger value="payments">Ubwishyu</TabsTrigger><TabsTrigger value="vets">Abaveterineri</TabsTrigger></TabsList>
+        <TabsList className="h-auto flex-wrap"><TabsTrigger value="payments">Ubwishyu</TabsTrigger><TabsTrigger value="vets">Abaveterineri</TabsTrigger><TabsTrigger value="users">Abakoresha</TabsTrigger><TabsTrigger value="listings">Ibicuruzwa</TabsTrigger><TabsTrigger value="ads">Amatangazo</TabsTrigger></TabsList>
         <TabsContent value="payments" className="mt-6 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-bold">Ubusabe bwo kwishyura <span className="text-sm font-normal text-muted-foreground">({filtered.length})</span></h2><div className="flex w-full flex-wrap gap-2 sm:w-auto"><div className="relative flex-1 sm:w-56"><Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" /><Input aria-label="Shaka ubusabe" placeholder="Shaka telefone cyangwa serivisi" className="pl-9" value={search} onChange={e => setSearch(e.target.value)} /></div><Select value={status} onValueChange={setStatus}><SelectTrigger className="w-40" aria-label="Imimerere y’ubusabe"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Byose</SelectItem><SelectItem value="pending">Bitegereje</SelectItem><SelectItem value="approved">Byemejwe</SelectItem><SelectItem value="rejected">Byanzwe</SelectItem></SelectContent></Select></div></div>
           <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
@@ -101,8 +102,11 @@ export default function Admin() {
         <TabsContent value="vets" className="mt-6 space-y-6">
           <h2 className="text-xl font-bold">Abaveterineri ({vets.length})</h2>
           <form onSubmit={addVet} className="space-y-4 rounded-2xl border border-border bg-card p-5 shadow-sm"><h3 className="font-semibold">Ongeraho umuveterineri</h3><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">{[{ key: "name", label: "Izina" }, { key: "phone", label: "Telefone" }, { key: "district", label: "Akarere" }, { key: "specialty", label: "Umwihariko" }, { key: "fee", label: "Igiciro (RWF)" }].map(f => <div key={f.key}><Label htmlFor={`vet-${f.key}`}>{f.label}</Label><Input id={`vet-${f.key}`} type={f.key === "fee" ? "number" : "text"} min={f.key === "fee" ? 0 : undefined} required={f.key === "name" || f.key === "fee"} value={v[f.key as keyof typeof v]} onChange={e => setV({ ...v, [f.key]: e.target.value })} /></div>)}</div><Button type="submit" disabled={adding}>{adding ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}Ongeraho</Button></form>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{vets.map(x => <div key={x.id} className="rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"><div className="flex items-start justify-between gap-3"><h3 className="font-bold break-words">{x.name}</h3><Stethoscope className="h-5 w-5 shrink-0 text-primary" /></div><p className="mt-1 text-sm text-muted-foreground">{x.district || "—"} · {x.specialty || "—"}</p><div className="mt-5 flex flex-wrap justify-between gap-2 text-sm"><a href={`tel:${x.phone ?? ""}`} className="text-primary">{x.phone || "—"}</a><span className="font-semibold">{money(x.fee)}</span></div><p className="mt-2 text-xs text-muted-foreground">{x.active ? "Arakora" : "Ntari gukora"}</p></div>)}</div>{!isLoading && !vets.length && <p className="py-8 text-center text-muted-foreground">Nta baveterineri barongerwamo.</p>}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{vets.map(x => <div key={x.id} className="rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"><div className="flex items-start justify-between gap-3"><h3 className="font-bold break-words">{x.name}</h3><Stethoscope className="h-5 w-5 shrink-0 text-primary" /></div><p className="mt-1 text-sm text-muted-foreground">{x.district || "—"} · {x.specialty || "—"}</p><div className="mt-5 flex flex-wrap justify-between gap-2 text-sm"><a href={`tel:${x.phone ?? ""}`} className="text-primary">{x.phone || "—"}</a><span className="font-semibold">{money(x.fee)}</span></div><div className="mt-3 flex items-center justify-between gap-2"><span className="text-xs text-muted-foreground">{x.active ? "Arakora" : "Ntari gukora"}</span><div className="flex gap-1"><Button size="sm" variant="outline" onClick={async () => { if (await vetAction(x.id, "toggle", x.active)) refetch(); }}>{x.active ? "Hagarika" : "Subizaho"}</Button><Button size="sm" variant="destructive" onClick={async () => { if (await vetAction(x.id, "delete")) refetch(); }}>Siba</Button></div></div></div>)}</div>{!isLoading && !vets.length && <p className="py-8 text-center text-muted-foreground">Nta baveterineri barongerwamo.</p>}
         </TabsContent>
+        <TabsContent value="users" className="mt-6"><UsersPanel me={user!.id} /></TabsContent>
+        <TabsContent value="listings" className="mt-6"><ListingsPanel /></TabsContent>
+        <TabsContent value="ads" className="mt-6"><AdsPanel /></TabsContent>
       </Tabs>
     </main>
   </div>;
