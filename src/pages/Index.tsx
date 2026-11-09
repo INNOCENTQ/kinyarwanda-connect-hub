@@ -71,7 +71,7 @@ const Index = () => (
         <div><Link to="/" className="inline-flex items-center gap-3 font-heading font-bold"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-secondary"><Sprout className="h-5 w-5" /></span><span>Umuhinzi AI</span></Link><p className="mt-4 max-w-xl text-sm leading-6 text-muted-foreground">Urubuga rukorwa mu Rwanda rufasha abahinzi n'aborozi kubona ubumenyi, ibikoresho n'amasoko mu Kinyarwanda. Umushinga wa Innocent MIGAMBI.</p></div>
         <div className="md:justify-self-end"><h3 className="font-heading font-bold">Serivisi</h3><ul className="mt-4 grid grid-cols-2 gap-x-8 gap-y-3 text-sm text-muted-foreground"><li><Link to="/weather" className="hover:text-primary">Ikirere</Link></li><li><Link to="/diagnose" className="hover:text-primary">Isuzuma rya AI</Link></li><li><Link to="/chat" className="hover:text-primary">Umujyanama AI</Link></li><li><Link to="/marketplace" className="hover:text-primary">Isoko</Link></li><li><Link to="/vets" className="hover:text-primary">Abaveterineri</Link></li><li><Link to="/premium" className="hover:text-primary">Serivisi z'inyongera</Link></li></ul></div>
       </div>
-      <div className="border-t border-border px-4 py-5 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} Umuhinzi AI · Yakozwe mu Rwanda na Innocent MIGAMBI</div>
+      <div className="border-t border-border px-4 py-5 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} Umuhinzi AI · Yakozwe mu Rwanda na Innocent MIGAMBI · <Link to="/admin/login" className="underline hover:text-foreground">Ubuyobozi</Link></div>
     </footer>
   </div>
 );
