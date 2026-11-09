@@ -21,6 +21,7 @@ const ChatPage = lazy(() => import("./pages/ChatPage"));
 const Weather = lazy(() => import("./pages/Weather"));
 const Premium = lazy(() => import("./pages/Premium"));
 const Vets = lazy(() => import("./pages/Vets"));
+const AdminLogin = lazy(() => import("./pages/AdminLogin"));
 const Admin = lazy(() => import("./pages/Admin"));
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false, retry: 1 } } });
@@ -50,6 +51,7 @@ const App = () => (
                 <Route path="/premium" element={<Premium />} />
                 <Route path="/vets" element={<Vets />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
