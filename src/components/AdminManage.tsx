@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Search, Trash2, Shield, ShieldOff, Eye, EyeOff, Power, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { UserPlus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -18,9 +20,30 @@ export function UsersPanel({ me }: { me: string }) {
     const { error } = await db.rpc("admin_set_admin", { _user: id, _make: make });
     if (error) toast.error("Ntibyakunze"); else { toast.success("Byahinduwe"); refetch(); }
   };
+  const [f, setF] = useState({ full_name: "", identifier: "", password: "", make_admin: false });
+  const [creating, setCreating] = useState(false);
+  const create = async (e: React.FormEvent) => {
+    e.preventDefault(); setCreating(true);
+    try {
+      const { data: r, error } = await supabase.functions.invoke("admin-create-user", { body: f });
+      let msg = r?.error; if (error && !msg) { try { msg = (await (error as any).context.json()).error; } catch { msg = "Ntibyakunze"; } }
+      if (msg) throw new Error(msg);
+      toast.success("Konti nshya yafunguwe"); setF({ full_name: "", identifier: "", password: "", make_admin: false }); refetch();
+    } catch (err: any) { toast.error(err.message); } finally { setCreating(false); }
+  };
   const list = data.filter(u => `${u.full_name} ${u.email} ${u.phone} ${u.district}`.toLowerCase().includes(q.toLowerCase()));
   return <div className="space-y-4">
     <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-bold">Abakoresha bose ({data.length})</h2><div className="relative w-full sm:w-64"><Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" /><Input className="pl-9" placeholder="Shaka izina, telefone..." value={q} onChange={e => setQ(e.target.value)} /></div></div>
+    <form onSubmit={create} className="space-y-3 rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <h3 className="flex items-center gap-2 font-semibold"><UserPlus className="h-4 w-4 text-primary" />Fungura konti nshya</h3>
+      <div className="grid gap-3 sm:grid-cols-3">
+        <div><Label htmlFor="nu-name">Amazina</Label><Input id="nu-name" required value={f.full_name} onChange={e => setF({ ...f, full_name: e.target.value })} /></div>
+        <div><Label htmlFor="nu-id">Telefone cyangwa imeyili</Label><Input id="nu-id" required placeholder="07XXXXXXXX" value={f.identifier} onChange={e => setF({ ...f, identifier: e.target.value })} /></div>
+        <div><Label htmlFor="nu-pw">Ijambo ry'ibanga</Label><Input id="nu-pw" type="text" minLength={6} required value={f.password} onChange={e => setF({ ...f, password: e.target.value })} /></div>
+      </div>
+      <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.make_admin} onChange={e => setF({ ...f, make_admin: e.target.checked })} />Agire umuyobozi</label>
+      <Button type="submit" disabled={creating}>{creating ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserPlus className="h-4 w-4" />}Fungura konti</Button>
+    </form>
     <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
       <table className="w-full min-w-[760px] text-sm"><thead className="bg-muted/50 text-muted-foreground"><tr>{["Izina", "Konti", "Akarere", "Ibicuruzwa", "Isuzuma", "Yiyandikishije", "Aheruka kwinjira", "Uruhare"].map(h => <th key={h} className="px-4 py-3 text-left font-medium">{h}</th>)}</tr></thead>
         <tbody className="divide-y divide-border">{list.map(u => <tr key={u.user_id} className="hover:bg-muted/40">
