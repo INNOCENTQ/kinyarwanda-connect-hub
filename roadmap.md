@@ -16,6 +16,7 @@ Not exercised: delivery of password-reset emails, AI responses and payment appro
 - [x] Language switch (Kinyarwanda/English only)
 
 # Staff dashboards
+- [ ] Add public administrator account registration without automatic administrative privileges; verify registration and approval boundaries.
 - [ ] Expand admin coverage: users, marketplace, advertisements, subscriptions and veterinary requests.
 - [ ] Add dedicated administrator and veterinarian sign-in with verified access.
 - [ ] Link veterinary accounts and manage assigned consultations securely.

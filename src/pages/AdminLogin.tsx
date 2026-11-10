@@ -44,6 +44,7 @@ export default function AdminLogin() {
           <div><Label htmlFor="admin-pw">Ijambo ry'ibanga</Label><Input id="admin-pw" type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} required /></div>
           <Button type="submit" className="w-full" disabled={loading}>{loading && <Loader2 className="h-4 w-4 animate-spin" />}Injira</Button>
         </form>
+        <Button asChild variant="link" className="mt-4 w-full whitespace-normal"><Link to="/admin/register">Nta konti ufite? Fungura konti nshya</Link></Button>
       </div>
     </div>
   );
